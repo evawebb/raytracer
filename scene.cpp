@@ -22,27 +22,59 @@ Color Scene::color_at(int x, int y) {
   Color diffuse_material(1, 0.3, 0.3);
   Color ambient_material(1, 1, 1);
 
+  int nearest_intersect = -1;
+  IntersectionEvent n_ie(
+    Point(0, 0, 0),
+    Vector(0, 0, 0),
+    false,
+    Point(0, 0, 0),
+    1000000,
+    Vector(0, 0, 0)
+  );
   for (int s = 0; s < spheres.size(); s += 1) {
     IntersectionEvent ie = spheres[s].intersect(origin, direction);
 
-    if (ie.intersected) {
-      Color diffuse_comp(0, 0, 0), ambient_comp(0, 0, 0);
+    if (ie.intersected && ie.distance < n_ie.distance) {
+      nearest_intersect = s;
+      n_ie = ie;
+    }
+  }
 
-      for (int l = 0; l < lights.size(); l += 1) {
-        Vector l_vector = lights[l].loc - ie.intersection;
+  if (nearest_intersect >= 0) {
+    Color diffuse_comp(0, 0, 0), ambient_comp(0, 0, 0);
 
-        Color diffuse_add = 
-          lights[l].diffuse *
-          diffuse_material * 
-          std::max(0.0f, l_vector.dot(ie.normal));
-        diffuse_comp = diffuse_comp + diffuse_add;
-        ambient_comp = ambient_comp +
-          lights[l].ambient * 
-          ambient_material;
+    for (int l = 0; l < lights.size(); l += 1) {
+      Vector l_vector = (lights[l].loc - n_ie.intersection).normalized();
+
+      bool blocked = false;
+      for (int s = 0; s < spheres.size(); s += 1) {
+        IntersectionEvent b_ie = spheres[s].intersect(
+          n_ie.intersection, 
+          l_vector
+        );
+        // blocked = blocked | b_ie.intersected;
+        if (b_ie.intersected) {
+          blocked = true;
+        }
+
+        if (s == 0 && b_ie.intersected && b_ie.distance > 0.05) {
+          std::cout << b_ie.origin.to_s() << ", " << b_ie.distance << ", " << b_ie.intersection.to_s() << '\n';
+        }
       }
 
-      c = diffuse_comp + ambient_comp;
+      if (!blocked) {
+        diffuse_comp = diffuse_comp + 
+          lights[l].diffuse *
+          diffuse_material * 
+          std::max(0.0f, l_vector.dot(n_ie.normal));
+      }
+
+      ambient_comp = ambient_comp +
+        lights[l].ambient * 
+        ambient_material;
     }
+
+    c = diffuse_comp + ambient_comp;
   }
 
   return c;

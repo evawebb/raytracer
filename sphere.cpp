@@ -26,20 +26,33 @@ IntersectionEvent Sphere::intersect(Point origin, Vector direction) {
     // This is the distance from the ray origin to the intersection point.
     float t = past.mag() - inside_dist;
 
-    // This is the point of intersection.
-    Point intersection = origin + direction * t;
+    // If the distance to the intersection point is non-positive, there
+    // wasn't really an intersection.
+    if (t > 0) {
+      // This is the point of intersection.
+      Point intersection = origin + direction * t;
 
-    // Finally, this is the surface normal at the intersection point.
-    Vector normal = (intersection - loc).normalized();
+      // Finally, this is the surface normal at the intersection point.
+      Vector normal = (intersection - loc).normalized();
 
-    return IntersectionEvent(
-      origin,
-      direction,
-      true,
-      intersection,
-      t,
-      normal
-    );
+      return IntersectionEvent(
+        origin,
+        direction,
+        true,
+        intersection,
+        t,
+        normal
+      );
+    } else {
+      return IntersectionEvent(
+        origin,
+        direction,
+        false,
+        Point(0, 0, 0),
+        0,
+        Vector(0, 0, 0)
+      );
+    }
   } else {
     return IntersectionEvent(
       origin,

@@ -2,6 +2,8 @@
 #define VECTOR_H
 
 #include <cmath>
+#include <sstream>
+#include <string>
 
 class Vector {
   public:
@@ -33,6 +35,12 @@ class Vector {
     Vector normalized() {
       float m = mag();
       return Vector(x / m, y / m, z / m);
+    }
+
+    std::string to_s() {
+      std::stringstream ss;
+      ss << '<' << x << ", " << y << ", " << z << '>';
+      return ss.str();
     }
 };
 

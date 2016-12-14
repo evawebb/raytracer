@@ -1,6 +1,8 @@
 #ifndef POINT_H
 #define POINT_H
 
+#include <sstream>
+#include <string>
 #include "vector.h"
 
 class Point {
@@ -23,6 +25,12 @@ class Point {
     }
     Point operator*(float f) {
       return Point(x * f, y * f, z * f);
+    }
+
+    std::string to_s() {
+      std::stringstream ss;
+      ss << '(' << x << ", " << y << ", " << z << ')';
+      return ss.str();
     }
 };
 
