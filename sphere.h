@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "point.h"
+#include "intersection_event.h"
 
 class Sphere {
   public:
@@ -15,7 +16,7 @@ class Sphere {
     Point loc;
     float radius;
 
-    float intersect(Point origin, Vector direction);
+    IntersectionEvent intersect(Point origin, Vector direction);
 };
 
 #endif

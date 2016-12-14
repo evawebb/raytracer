@@ -2,23 +2,17 @@
 
 ImgWriter::~ImgWriter() {
   for (int y = 0; y < height; y += 1) {
-    for (int x = 0; x < width; x += 1) {
-      delete img[y][x];
-    }
     delete img[y];
   }
   delete img;
 }
 
 void ImgWriter::init() {
-  img = new int**[height];
+  img = new Color*[height];
   for (int y = 0; y < height; y += 1) {
-    img[y] = new int*[width];
+    img[y] = new Color[width];
     for (int x = 0; x < width; x += 1) {
-      img[y][x] = new int[3];
-      img[y][x][0] = 0;
-      img[y][x][1] = 0;
-      img[y][x][2] = 0;
+      img[y][x] = Color(0, 0, 0);
     }
   }
 }
@@ -31,9 +25,9 @@ void ImgWriter::write() {
 
   for (int y = 0; y < height; y += 1) {
     for (int x = 0; x < width; x += 1) {
-      ss << img[y][x][0] << ' ';
-      ss << img[y][x][1] << ' ';
-      ss << img[y][x][2] << ' ';
+      ss << (int)(255 * img[y][x].r) << ' ';
+      ss << (int)(255 * img[y][x].g) << ' ';
+      ss << (int)(255 * img[y][x].b) << ' ';
     }
     ss << '\n';
   }
@@ -44,12 +38,14 @@ void ImgWriter::write() {
 }
 
 void ImgWriter::set(int x, int y, int r, int g, int b) {
+  set(x, y, Color(r, g, b));
+}
+
+void ImgWriter::set(int x, int y, Color c) {
   if (
     0 <= x && x < width
     && 0 <= y && y < height
   ) {
-    img[y][x][0] = r;
-    img[y][x][1] = g;
-    img[y][x][2] = b;
+    img[y][x] = c;
   }
 }

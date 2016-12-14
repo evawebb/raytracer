@@ -30,6 +30,10 @@ class Vector {
     float mag() {
       return sqrt(x * x + y * y + z * z);
     }
+    Vector normalized() {
+      float m = mag();
+      return Vector(x / m, y / m, z / m);
+    }
 };
 
 #endif

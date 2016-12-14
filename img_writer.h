@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include "color.h"
 
 class ImgWriter {
   public:
@@ -18,9 +19,10 @@ class ImgWriter {
 
     void write();
     void set(int x, int y, int r, int g, int b);
+    void set(int x, int y, Color c);
 
   private:
-    int*** img;
+    Color** img;
     int width, height;
 
     void init();

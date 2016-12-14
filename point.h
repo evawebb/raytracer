@@ -15,6 +15,9 @@ class Point {
     Point operator+(Point o) {
       return Point(x + o.x, y + o.y, z + o.z);
     }
+    Point operator+(Vector v) {
+      return Point(x + v.x, y + v.y, z + v.z);
+    }
     Vector operator-(Point o) {
       return Vector(x - o.x, y - o.y, z - o.z);
     }
