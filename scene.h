@@ -13,7 +13,7 @@ class Scene {
     Scene(int w, int h);
 
     int* color_at(int x, int y);
-    void add_sphere(int x, int y, int z, float r);
+    void add_sphere(float x, float y, float z, float r);
 
     void test();
 

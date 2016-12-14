@@ -11,9 +11,17 @@ Scene::Scene(int w, int h) {
 }
 
 int* Scene::color_at(int x, int y) {
+  float scale = (width < height) ? (width / 2.0) : (height / 2.0);
+  float adj_x = (x - scale) / scale;
+  float adj_y = (y - scale) / scale;
+  Point origin(adj_x, adj_y, 0);
+  Vector direction(0, 0, 1);
+
   int* color = new int[3];
-  if (sqrt(x * x + y * y) < 100) {
-    color[0] = 255;
+  float t = spheres[0].intersect(origin, direction);
+  if (t > 0) {
+    float red_p = (0.5 - t) / 0.2;
+    color[0] = red_p * 255;
   } else {
     color[0] = 0;
   }
@@ -22,7 +30,7 @@ int* Scene::color_at(int x, int y) {
   return color;
 }
 
-void Scene::add_sphere(int x, int y, int z, float r) {
+void Scene::add_sphere(float x, float y, float z, float r) {
   spheres.push_back(Sphere(Point(x, y, z), r));
 }
 
