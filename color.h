@@ -26,7 +26,6 @@ class Color {
     }
     Color operator+(Color o) {
       return Color(r + o.r / 2.0, g + o.g / 2.0, b + o.b / 2.0);
-      // return Color(r + o.r, g + o.g, b + o.b);
     }
 };
 

@@ -1,8 +1,8 @@
 - [x] Sphere materials
-- [ ] Antialiasing
+- [x] Antialiasing
 - [ ] Specular lighting
 - [ ] Reflections
+- [ ] Perspective
 - [ ] Planes
 - [ ] Triangles
 - [ ] Textures
-- [ ] Figure out how to combine colors (+ and *)
