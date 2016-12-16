@@ -1,1 +1,7 @@
+- [ ] Sphere materials
+- [ ] Specular lighting
+- [ ] Reflections
+- [ ] Planes
+- [ ] Triangles
+- [ ] Textures
 - [ ] Figure out how to combine colors (+ and *)
