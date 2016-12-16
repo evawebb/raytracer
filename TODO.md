@@ -1,4 +1,5 @@
-- [ ] Sphere materials
+- [x] Sphere materials
+- [ ] Antialiasing
 - [ ] Specular lighting
 - [ ] Reflections
 - [ ] Planes

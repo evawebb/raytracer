@@ -9,12 +9,12 @@ class Light {
     Light() {}
     Light(
       Point i_loc,
-      Color i_diffuse,
-      Color i_ambient
+      Color i_ambient,
+      Color i_diffuse
     ) {
       loc = i_loc;
-      diffuse = i_diffuse;
       ambient = i_ambient;
+      diffuse = i_diffuse;
     }
 
     Point loc;

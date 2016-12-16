@@ -7,17 +7,43 @@ int main(int argc, char** argv) {
   int s_l = 1000;
   ImgWriter iw(s_l, s_l);
   Scene sc(s_l, s_l);
-  if (true) {
-    sc.add_sphere(0.4, -0.4, 0.1, 0.1);
-    sc.add_sphere(0.5, -0.5, 0.5, 0.3);
-    sc.add_sphere(-0.5, -0.2, 1, 0.4);
-    sc.add_light(0, -2, -1, Color(1, 1, 1), Color(0.3, 0.3, 0.3));
-    sc.add_light(0, 0.2, -1, Color(1, 1, 1), Color(0.3, 0.3, 0.3));
+  Color ambient(1, 1, 1);
+  if (false) {
+    sc.add_sphere(
+      0.4, -0.4, 0.1, 
+      0.1,
+      Color(1, 0, 0),
+      ambient
+    );
+    sc.add_sphere(
+      0.5, -0.5, 0.5, 
+      0.3,
+      Color(0, 0, 1),
+      ambient
+    );
+    sc.add_sphere(
+      -0.5, -0.2, 1, 
+      0.4,
+      Color(0, 1, 0),
+      ambient
+    );
+    sc.add_light(2, 0, 0, Color(0.3, 0.3, 0.3), Color(1, 1, 1));
+    sc.add_light(0, 0.2, -1, Color(0.3, 0.3, 0.3), Color(1, 1, 1));
   } else {
-    sc.add_sphere(0, 0.5, 0.5, 0.5);
-    sc.add_sphere(0, -0.3, 0.3, 0.1);
-    sc.add_light(0, -1, 0.1, Color(1, 1, 1), Color(0.3, 0.3, 0.3));
-    sc.add_light(0, 1, -0.2, Color(1, 1, 0), Color(0.3, 0.3, 0.3));
+    sc.add_sphere(
+      0, 0.5, 0.5, 
+      0.5,
+      Color(0, 0, 1),
+      ambient
+    );
+    sc.add_sphere(
+      0, -0.3, 0.3, 
+      0.1,
+      Color(1, 0, 0),
+      ambient
+    );
+    sc.add_light(0, -1, 0.1, Color(0.3, 0.3, 0.3), Color(1, 1, 1));
+    sc.add_light(0, 1, -0.2, Color(0.3, 0.3, 0.3), Color(1, 1, 0));
   }
   sc.test();
 

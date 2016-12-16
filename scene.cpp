@@ -18,10 +18,6 @@ Color Scene::color_at(int x, int y) {
   Vector direction(0, 0, 1);
   Color c(0, 0, 0);
 
-  // Obviously replace these at some point.
-  Color diffuse_material(1, 1, 1);
-  Color ambient_material(1, 1, 1);
-
   int nearest_intersect = -1;
   IntersectionEvent n_ie(
     Point(0, 0, 0),
@@ -32,12 +28,15 @@ Color Scene::color_at(int x, int y) {
     Vector(0, 0, 0),
     -1
   );
+  Color ambient_material, diffuse_material;
   for (int s = 0; s < spheres.size(); s += 1) {
     IntersectionEvent ie = spheres[s].intersect(origin, direction);
 
     if (ie.intersected && ie.distance < n_ie.distance) {
       nearest_intersect = s;
       n_ie = ie;
+      ambient_material = spheres[s].ambient;
+      diffuse_material = spheres[s].diffuse;
     }
   }
 
@@ -56,33 +55,39 @@ Color Scene::color_at(int x, int y) {
         blocked = blocked | b_ie.intersected;
       }
 
+      ambient_comp = ambient_comp +
+        lights[l].ambient * 
+        ambient_material;
+
       if (!blocked) {
         diffuse_comp = diffuse_comp + 
           lights[l].diffuse *
           diffuse_material * 
           std::max(0.0, l_vector.dot(n_ie.normal));
       }
-
-      ambient_comp = ambient_comp +
-        lights[l].ambient * 
-        ambient_material;
     }
 
-    c = diffuse_comp + ambient_comp;
+    c = ambient_comp + diffuse_comp;
   }
 
   return c;
 }
 
-void Scene::add_sphere(double x, double y, double z, double r) {
-  spheres.push_back(Sphere(spheres.size(), Point(x, y, z), r));
+void Scene::add_sphere(double x, double y, double z, double r, Color i_ambient, Color i_diffuse) {
+  spheres.push_back(Sphere(
+    spheres.size(), 
+    Point(x, y, z), 
+    r, 
+    i_ambient, 
+    i_diffuse
+  ));
 }
 
-void Scene::add_light(double x, double y, double z, Color i_diffuse, Color i_ambient) {
+void Scene::add_light(double x, double y, double z, Color i_ambient, Color i_diffuse) {
   lights.push_back(Light(
     Point(x, y, z),
-    i_diffuse,
-    i_ambient
+    i_ambient,
+    i_diffuse
   ));
 }
 
