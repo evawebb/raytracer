@@ -5,14 +5,16 @@
 #include <sstream>
 #include <string>
 
+#define TOLERANCE 0.0000001
+
 class Vector {
   public:
     Vector() {}
-    Vector(float ix, float iy, float iz) {
+    Vector(double ix, double iy, double iz) {
       x = ix; y = iy; z = iz;
     }
 
-    float x, y, z;
+    double x, y, z;
 
     Vector operator+(Vector o) {
       return Vector(x + o.x, y + o.y, z + o.z);
@@ -20,20 +22,27 @@ class Vector {
     Vector operator-(Vector o) {
       return Vector(x - o.x, y - o.y, z - o.z);
     }
-    Vector operator*(float f) {
+    Vector operator*(double f) {
       return Vector(x * f, y * f, z * f);
     }
-    float dot(Vector o) {
+    bool operator==(Vector o) {
+      double dx = x - o.x;
+      double dy = y - o.y;
+      double dz = z - o.z;
+      double dist = sqrt(dx * dx + dy * dy + dz * dz);
+      return dist < TOLERANCE;
+    }
+    double dot(Vector o) {
       return x * o.x + y * o.y + z * o.z;
     }
     Vector cross(Vector o) {
       return Vector(y * o.z - z * o.y, z * o.x - x * o.z, x * o.y - y * o.x);
     }
-    float mag() {
+    double mag() {
       return sqrt(x * x + y * y + z * z);
     }
     Vector normalized() {
-      float m = mag();
+      double m = mag();
       return Vector(x / m, y / m, z / m);
     }
 

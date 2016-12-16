@@ -6,11 +6,11 @@
 class Color {
   public:
     Color() {}
-    Color(float ir, float ig, float ib) {
+    Color(double ir, double ig, double ib) {
       r = ir; g = ig; b = ib;
     }
 
-    float r, g, b;
+    double r, g, b;
 
     int* to_arr() {
       int* arr = new int[3];
@@ -18,7 +18,7 @@ class Color {
       return arr;
     }
 
-    Color operator*(float f) {
+    Color operator*(double f) {
       return Color(r * f, g * f, b * f);
     }
     Color operator*(Color o) {

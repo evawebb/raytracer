@@ -8,11 +8,11 @@
 class Point {
   public:
     Point() {}
-    Point(float ix, float iy, float iz) {
+    Point(double ix, double iy, double iz) {
       x = ix; y = iy; z = iz;
     }
 
-    float x, y, z;
+    double x, y, z;
 
     Point operator+(Point o) {
       return Point(x + o.x, y + o.y, z + o.z);
@@ -23,7 +23,7 @@ class Point {
     Vector operator-(Point o) {
       return Vector(x - o.x, y - o.y, z - o.z);
     }
-    Point operator*(float f) {
+    Point operator*(double f) {
       return Point(x * f, y * f, z * f);
     }
 

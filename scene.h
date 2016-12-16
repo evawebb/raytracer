@@ -16,8 +16,8 @@ class Scene {
     Scene(int w, int h);
 
     Color color_at(int x, int y);
-    void add_sphere(float x, float y, float z, float r);
-    void add_light(float x, float y, float z, Color i_diffuse, Color i_ambient);
+    void add_sphere(double x, double y, double z, double r);
+    void add_light(double x, double y, double z, Color i_diffuse, Color i_ambient);
 
     void test();
 
