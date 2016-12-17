@@ -10,7 +10,7 @@ Scene::Scene(int w, int h) {
   height = h;
 }
 
-Color Scene::color_at(int x, int y, int aa) {
+Color Scene::color_at(int x, int y, double focal_length, int aa) {
   double dim = (width < height) ? width : height;
   double scale = dim / 2;
   double adj_x = (x - scale) / scale;
@@ -27,7 +27,7 @@ Color Scene::color_at(int x, int y, int aa) {
       double adj_y_aa = (1 + 2 * aa_y) / (2 * aa * scale);
 
       Point origin(adj_x + adj_x_aa, adj_y + adj_y_aa, 0);
-      Vector direction(0, 0, 1);
+      Vector direction = (origin - Point(0, 0, -focal_length)).normalized();
 
       Color c = cast_ray(origin, direction, 10);
       total_r += c.r;

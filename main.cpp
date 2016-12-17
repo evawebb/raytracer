@@ -6,7 +6,7 @@
 #include "material.h"
 
 int main(int argc, char** argv) {
-  int s_l = 1920;
+  int s_l = 1000;
   ImgWriter iw(s_l, s_l);
   Scene sc(s_l, s_l);
 
@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
     Color(0, 0, 1),
     Color(0, 0, 1),
     white,
-    15,
+    1.5,
     0.5,
     ai, di, si
   );
@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
     0, 0, si
   );
 
-  int scene = 2;
+  int scene = 0;
   if (scene == 0) {
     sc.add_sphere(0.4, -0.4, 0.1, 0.1, red);
     sc.add_sphere(0.5, -0.5, 0.5, 0.3, green);
@@ -62,7 +62,7 @@ int main(int argc, char** argv) {
   } else if (scene == 2) {
     for (int x = 1; x < 10; x += 1) {
       for (int y = 1; y < 10; y += 1) {
-        Material m(white, white, white, x * 30, 0, 0.1, 0.2, y * 0.05);
+        Material m(white, white, white, x * 2, 0, 0.1, 0.2, y * 0.05);
         sc.add_sphere(x * 0.2 - 1, y * 0.2 - 1, 1, 0.1, m);
       }
     }
@@ -82,7 +82,7 @@ int main(int argc, char** argv) {
   Color most_intense(0, 0, 0);
   for (int y = 0; y < s_l; y += 1) {
     for (int x = 0; x < s_l; x += 1) {
-      Color c = sc.color_at(x, y, 2);
+      Color c = sc.color_at(x, y, 5, 2);
       iw.set(x, y, c);
 
       int b = (c.r + c.g + c.b) / 3.0 * num_buckets;

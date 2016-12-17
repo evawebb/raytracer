@@ -16,7 +16,7 @@ class Scene {
     Scene();
     Scene(int w, int h);
 
-    Color color_at(int x, int y, int aa);
+    Color color_at(int x, int y, double focal_length, int aa);
     Color cast_ray(Point origin, Vector direction, int limit);
     void add_sphere(double x, double y, double z, double r, Material i_material);
     void add_light(double x, double y, double z, Color i_ambient, Color i_diffuse, Color i_specular);
