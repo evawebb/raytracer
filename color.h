@@ -2,6 +2,8 @@
 #define COLOR_H
 
 #include <cstdlib>
+#include <sstream>
+#include <string>
 
 class Color {
   public:
@@ -11,12 +13,6 @@ class Color {
     }
 
     double r, g, b;
-
-    int* to_arr() {
-      int* arr = new int[3];
-      arr[0] = r; arr[1] = g; arr[2] = b;
-      return arr;
-    }
 
     Color blend(Color o, double t_this, double t_other) {
       return Color(
@@ -34,6 +30,12 @@ class Color {
     }
     Color operator*(Color o) {
       return Color(r * o.r, g * o.g, b * o.b);
+    }
+
+    std::string to_s() {
+      std::stringstream ss;
+      ss << "c(" << r << ", " << g << ", " << b << ')';
+      return ss.str();
     }
 };
 

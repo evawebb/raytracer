@@ -5,6 +5,11 @@
 #include "color.h"
 #include "material.h"
 
+double rand_double() {
+  int precision = 10000;
+  return (float)(rand() % precision) / precision;
+}
+
 int main(int argc, char** argv) {
   int s_l = 1000;
   ImgWriter iw(s_l, s_l);
@@ -47,7 +52,7 @@ int main(int argc, char** argv) {
     0, 0, si
   );
 
-  int scene = 0;
+  int scene = 4;
   if (scene == 0) {
     sc.add_sphere(0.4, -0.4, 0.1, 0.1, red);
     sc.add_sphere(0.5, -0.5, 0.5, 0.3, green);
@@ -67,6 +72,20 @@ int main(int argc, char** argv) {
       }
     }
     sc.add_light(0, 0, 0, Color(0.3, 0.3, 0.3), white, white);
+  } else if (scene == 4) {
+    srand(time(NULL));
+    for (int i = 0; i < 100; i += 1) {
+      Color c(rand_double(), rand_double(), rand_double());
+      Material m(c, c, white, rand_double() * 20, rand_double(), 0.4, 0.4, 0.4);
+      sc.add_sphere(
+        rand_double() * 2 - 1, 
+        rand_double() * 2 - 1,
+        rand_double() * 2 + 1,
+        rand_double() * 0.2,
+        m
+      );
+    }
+    sc.add_light(0, 0, 0, white, white, white);
   }
 
   std::cout << '\n';
