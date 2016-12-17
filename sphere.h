@@ -4,8 +4,8 @@
 #include <cmath>
 #include <iostream>
 #include "point.h"
-#include "color.h"
 #include "intersection_event.h"
+#include "material.h"
 
 class Sphere {
   public:
@@ -14,22 +14,18 @@ class Sphere {
       int i_id, 
       Point i_loc, 
       double i_radius,
-      Color i_ambient,
-      Color i_diffuse,
-      double i_reflectivity
+      Material i_material
     ) {
       id = i_id;
       loc = i_loc;
       radius = i_radius;
-      ambient = i_ambient;
-      diffuse = i_diffuse;
-      reflectivity = i_reflectivity;
+      material = i_material;
     }
 
     int id;
     Point loc;
-    double radius, reflectivity;
-    Color ambient, diffuse;
+    double radius;
+    Material material;
 
     IntersectionEvent intersect(Point origin, Vector direction);
 };

@@ -10,15 +10,17 @@ class Light {
     Light(
       Point i_loc,
       Color i_ambient,
-      Color i_diffuse
+      Color i_diffuse,
+      Color i_specular
     ) {
       loc = i_loc;
       ambient = i_ambient;
       diffuse = i_diffuse;
+      specular = i_specular;
     }
 
     Point loc;
-    Color diffuse, ambient;
+    Color diffuse, ambient, specular;
 };
 
 #endif

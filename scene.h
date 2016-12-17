@@ -9,6 +9,7 @@
 #include "intersection_event.h"
 #include "color.h"
 #include "light.h"
+#include "material.h"
 
 class Scene {
   public:
@@ -17,8 +18,8 @@ class Scene {
 
     Color color_at(int x, int y, int aa);
     Color cast_ray(Point origin, Vector direction, int limit);
-    void add_sphere(double x, double y, double z, double r, Color i_ambient, Color i_diffuse, double i_reflectivity);
-    void add_light(double x, double y, double z, Color i_ambient, Color i_diffuse);
+    void add_sphere(double x, double y, double z, double r, Material i_material);
+    void add_light(double x, double y, double z, Color i_ambient, Color i_diffuse, Color i_specular);
 
     void test();
 

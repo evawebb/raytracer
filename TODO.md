@@ -1,7 +1,7 @@
 - [x] Sphere materials
 - [x] Antialiasing
-- [ ] Specular lighting
-- [ ] Reflections
+- [x] Specular lighting
+- [x] Reflections
 - [ ] Perspective
 - [ ] Planes
 - [ ] Triangles

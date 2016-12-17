@@ -55,26 +55,23 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit) {
       Vector(0, 0, 0),
       -1
     );
-    Color ambient_material, diffuse_material;
-    double reflectivity;
+    Material material;
     for (int s = 0; s < spheres.size(); s += 1) {
       IntersectionEvent ie = spheres[s].intersect(origin, direction);
 
       if (ie.intersected && ie.distance < n_ie.distance) {
         nearest_intersect = s;
         n_ie = ie;
-        ambient_material = spheres[s].ambient;
-        diffuse_material = spheres[s].diffuse;
-        reflectivity = spheres[s].reflectivity;
+        material = spheres[s].material;
       }
     }
 
     if (nearest_intersect >= 0) {
       Color diffuse_comp(0, 0, 0);
       Color ambient_comp(0, 0, 0);
+      Color specular_comp(0, 0, 0);
       Color reflective_comp(0, 0, 0);
 
-      int unblocked_count = 0;
       for (int l = 0; l < lights.size(); l += 1) {
         Vector l_vector = (lights[l].loc - n_ie.intersection).normalized();
 
@@ -89,27 +86,45 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit) {
 
         Color this_ac =
           lights[l].ambient *
-          ambient_material;
+          material.ambient;
         ambient_comp.r += this_ac.r;
         ambient_comp.g += this_ac.g;
         ambient_comp.b += this_ac.b;
 
         if (!blocked) {
+          Vector r_vector = 
+            (
+              n_ie.normal * 
+              n_ie.normal.dot(l_vector) 
+              * 2
+            ) - l_vector;
+
           Color this_dc =
             lights[l].diffuse *
-            diffuse_material *
+            material.diffuse *
             std::max(0.0, l_vector.dot(n_ie.normal));
           diffuse_comp.r += this_dc.r;
           diffuse_comp.g += this_dc.g;
           diffuse_comp.b += this_dc.b;
-          unblocked_count += 1;
+
+          Color this_sc =
+            lights[l].specular *
+            material.specular *
+            std::pow(
+              std::max(0.0, r_vector.dot(direction * -1)),
+              material.shininess
+            );
+          specular_comp.r += this_sc.r;
+          specular_comp.g += this_sc.g;
+          specular_comp.b += this_sc.b;
         }
       }
 
       ambient_comp = ambient_comp * (1.0 / lights.size());
       diffuse_comp = diffuse_comp * (1.0 / lights.size());
+      specular_comp = specular_comp * (1.0 / lights.size());
 
-      if (reflectivity > 0) {
+      if (material.reflectivity > 0) {
         Vector ref_dir = (n_ie.normal * n_ie.normal.dot(direction * -1) * 2) + direction;
         reflective_comp = cast_ray(
           n_ie.intersection + ref_dir * 0.1,
@@ -119,8 +134,16 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit) {
       }
 
       return reflective_comp.blend(
-        ambient_comp.blend(diffuse_comp, 0.5),
-        reflectivity
+        ambient_comp.blend(
+          diffuse_comp.blend(
+            specular_comp,
+            material.diffuse_intensity,
+            material.specular_intensity
+          ),
+          material.ambient_intensity,
+          1
+        ),
+        material.reflectivity
       );
     } else {
       return Color(0, 0, 0);
@@ -128,22 +151,21 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit) {
   }
 }
 
-void Scene::add_sphere(double x, double y, double z, double r, Color i_ambient, Color i_diffuse, double i_reflectivity) {
+void Scene::add_sphere(double x, double y, double z, double r, Material i_material) {
   spheres.push_back(Sphere(
     spheres.size(), 
     Point(x, y, z), 
     r, 
-    i_ambient, 
-    i_diffuse,
-    i_reflectivity
+    i_material
   ));
 }
 
-void Scene::add_light(double x, double y, double z, Color i_ambient, Color i_diffuse) {
+void Scene::add_light(double x, double y, double z, Color i_ambient, Color i_diffuse, Color i_specular) {
   lights.push_back(Light(
     Point(x, y, z),
     i_ambient,
-    i_diffuse
+    i_diffuse,
+    i_specular
   ));
 }
 
