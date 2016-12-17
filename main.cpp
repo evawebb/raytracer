@@ -6,7 +6,7 @@
 #include "material.h"
 
 int main(int argc, char** argv) {
-  int s_l = 1000;
+  int s_l = 1920;
   ImgWriter iw(s_l, s_l);
   Scene sc(s_l, s_l);
 
@@ -47,37 +47,26 @@ int main(int argc, char** argv) {
     0, 0, si
   );
 
-  if (true) {
-    sc.add_sphere(
-      0.4, -0.4, 0.1, 
-      0.1,
-      red
-    );
-    sc.add_sphere(
-      0.5, -0.5, 0.5, 
-      0.3,
-      green
-    );
-    sc.add_sphere(
-      -0.5, -0.2, 1, 
-      0.4,
-      blue
-    );
+  int scene = 2;
+  if (scene == 0) {
+    sc.add_sphere(0.4, -0.4, 0.1, 0.1, red);
+    sc.add_sphere(0.5, -0.5, 0.5, 0.3, green);
+    sc.add_sphere(-0.5, -0.2, 1, 0.4, blue);
     sc.add_light(2, 0, 0, Color(0.3, 0.3, 0.3), white, white);
     sc.add_light(0, 0.2, -1, Color(0.3, 0.3, 0.3), white, white);
-  } else {
-    sc.add_sphere(
-      0, 0.5, 0.5, 
-      0.5,
-      blue
-    );
-    sc.add_sphere(
-      0, -0.3, 0.3, 
-      0.1,
-      red
-    );
+  } else if (scene == 1) {
+    sc.add_sphere(0, 0.5, 0.5, 0.5, blue);
+    sc.add_sphere(0, -0.3, 0.3, 0.1, red);
     sc.add_light(0, -1, 0.1, Color(0.3, 0.3, 0.3), white, white);
     sc.add_light(0, 1, -0.2, Color(0.3, 0.3, 0.3), white, white);
+  } else if (scene == 2) {
+    for (int x = 1; x < 10; x += 1) {
+      for (int y = 1; y < 10; y += 1) {
+        Material m(white, white, white, x * 30, 0, 0.1, 0.2, y * 0.05);
+        sc.add_sphere(x * 0.2 - 1, y * 0.2 - 1, 1, 0.1, m);
+      }
+    }
+    sc.add_light(0, 0, 0, Color(0.3, 0.3, 0.3), white, white);
   }
 
   std::cout << '\n';
