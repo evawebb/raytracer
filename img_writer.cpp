@@ -2,9 +2,9 @@
 
 ImgWriter::~ImgWriter() {
   for (int y = 0; y < height; y += 1) {
-    delete img[y];
+    delete[] img[y];
   }
-  delete img;
+  delete[] img;
 }
 
 void ImgWriter::init() {
