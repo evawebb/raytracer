@@ -15,18 +15,20 @@ class Sphere {
       Point i_loc, 
       double i_radius,
       Color i_ambient,
-      Color i_diffuse
+      Color i_diffuse,
+      double i_reflectivity
     ) {
       id = i_id;
       loc = i_loc;
       radius = i_radius;
       ambient = i_ambient;
       diffuse = i_diffuse;
+      reflectivity = i_reflectivity;
     }
 
     int id;
     Point loc;
-    double radius;
+    double radius, reflectivity;
     Color ambient, diffuse;
 
     IntersectionEvent intersect(Point origin, Vector direction);

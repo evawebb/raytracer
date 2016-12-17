@@ -12,7 +12,6 @@ IntersectionEvent Sphere::intersect(Point origin, Vector direction) {
   // If the past vector is pointing opposite the direction vector, 
   // then it's not really an intersection.
   Vector p_n = past.normalized();
-  // if (p_n.x == direction.x && p_n.y == direction.y && p_n.z == direction.z) {
   if (past.normalized() == direction) {
     // This is the distance from the sphere's center to the past vector.
     // This forms one of the legs of a right triangle with three vertices:
@@ -29,11 +28,18 @@ IntersectionEvent Sphere::intersect(Point origin, Vector direction) {
       double inside_dist = sqrt(radius * radius - clearance * clearance);
 
       // This is the distance from the ray origin to the intersection point.
-      double t = past.mag() - inside_dist;
+      // If the origin is inside the sphere it intersects with, then this
+      // should be calculated differently.
+      double t;
+      if (direct.mag() > radius) {
+        t = past.mag() - inside_dist;
+      } else {
+        t = past.mag() + inside_dist;
+      }
 
-      // If the distance to the intersection point is non-positive, there
-      // wasn't really an intersection.
-      if (t > 0) {
+      // If the distance to the intersection is zero, then you just
+      // intersected with yourself!
+      if (t != 0) {
         // This is the point of intersection.
         Point intersection = origin + direction * t;
 

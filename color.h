@@ -18,14 +18,22 @@ class Color {
       return arr;
     }
 
+    Color blend(Color o, double t_this, double t_other) {
+      return Color(
+        t_this * r + t_other * o.r,
+        t_this * g + t_other * o.g,
+        t_this * b + t_other * o.b
+      );
+    }
+    Color blend(Color o, double t) {
+      return blend(o, t, 1 - t);
+    }
+
     Color operator*(double f) {
       return Color(r * f, g * f, b * f);
     }
     Color operator*(Color o) {
       return Color(r * o.r, g * o.g, b * o.b);
-    }
-    Color operator+(Color o) {
-      return Color(r + o.r / 2.0, g + o.g / 2.0, b + o.b / 2.0);
     }
 };
 
