@@ -5,14 +5,17 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <string>
 #include "color.h"
 
 class ImgWriter {
   public:
     ImgWriter() {
+      fn = "img.ppm";
       width = 0; height = 0;
     }
-    ImgWriter(int w, int h) {
+    ImgWriter(std::string i_fn, int w, int h) {
+      fn = i_fn;
       width = w; height = h; init();
     }
     ~ImgWriter();
@@ -23,6 +26,7 @@ class ImgWriter {
 
   private:
     Color** img;
+    std::string fn;
     int width, height;
 
     void init();

@@ -65,6 +65,15 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit) {
         material = spheres[s].material;
       }
     }
+    for (int p = 0; p < planes.size(); p += 1) {
+      IntersectionEvent ie = planes[p].intersect(origin, direction);
+
+      if (ie.intersected && ie.distance < n_ie.distance) {
+        nearest_intersect = p;
+        n_ie = ie;
+        material = planes[p].material;
+      }
+    }
 
     if (nearest_intersect >= 0) {
       Color diffuse_comp(0, 0, 0);
@@ -73,7 +82,9 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit) {
       Color reflective_comp(0, 0, 0);
 
       for (int l = 0; l < lights.size(); l += 1) {
-        Vector l_vector = (lights[l].loc - n_ie.intersection).normalized();
+        Vector l_vector = lights[l].loc - n_ie.intersection;
+        double l_distance = l_vector.mag();
+        l_vector = l_vector.normalized();
 
         bool blocked = false;
         for (int s = 0; s < spheres.size(); s += 1) {
@@ -81,7 +92,14 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit) {
             n_ie.intersection + l_vector * 0.01,
             l_vector
           );
-          blocked = blocked | b_ie.intersected;
+          blocked = blocked || (b_ie.intersected && b_ie.distance < l_distance);
+        }
+        for (int p = 0; p < planes.size(); p += 1) {
+          IntersectionEvent b_ie = planes[p].intersect(
+            n_ie.intersection + l_vector * 0.01,
+            l_vector
+          );
+          blocked = blocked || (b_ie.intersected && b_ie.distance < l_distance);
         }
 
         Color this_ac =
@@ -156,6 +174,15 @@ void Scene::add_sphere(double x, double y, double z, double r, Material i_materi
     spheres.size(), 
     Point(x, y, z), 
     r, 
+    i_material
+  ));
+}
+
+void Scene::add_plane(Point i_loc, Vector i_normal, Material i_material) {
+  planes.push_back(Plane(
+    planes.size(),
+    i_loc,
+    i_normal,
     i_material
   ));
 }

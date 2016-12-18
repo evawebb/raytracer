@@ -32,7 +32,7 @@ void ImgWriter::write() {
     ss << '\n';
   }
 
-  std::ofstream out_file("img.ppm");
+  std::ofstream out_file(fn.c_str());
   out_file << ss.str();
   out_file.close();
 }

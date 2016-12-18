@@ -1,31 +1,30 @@
-#ifndef SPHERE_H
-#define SPHERE_H
+#ifndef PLANE_H
+#define PLANE_H
 
-#include <cmath>
 #include <iostream>
 #include "point.h"
 #include "vector.h"
 #include "intersection_event.h"
 #include "material.h"
 
-class Sphere {
+class Plane {
   public:
-    Sphere() {}
-    Sphere(
-      int i_id, 
-      Point i_loc, 
-      double i_radius,
+    Plane() {}
+    Plane(
+      int i_id,
+      Point i_loc,
+      Vector i_normal,
       Material i_material
     ) {
       id = i_id;
       loc = i_loc;
-      radius = i_radius;
+      normal = i_normal.normalized();
       material = i_material;
     }
 
     int id;
     Point loc;
-    double radius;
+    Vector normal;
     Material material;
 
     IntersectionEvent intersect(Point origin, Vector direction);

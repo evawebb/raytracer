@@ -2,7 +2,10 @@
 - [x] Antialiasing
 - [x] Specular lighting
 - [x] Reflections
-- [ ] Perspective
-- [ ] Planes
+- [x] Perspective
+- [x] Planes
 - [ ] Triangles
 - [ ] Textures
+- [ ] Unified model object
+- [ ] Reading in .obj files
+- [ ] Camera transformations
