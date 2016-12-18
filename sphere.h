@@ -3,12 +3,13 @@
 
 #include <cmath>
 #include <iostream>
+#include "object.h"
 #include "point.h"
 #include "vector.h"
 #include "intersection_event.h"
 #include "material.h"
 
-class Sphere {
+class Sphere : public Object {
   public:
     Sphere() {}
     Sphere(
@@ -16,17 +17,11 @@ class Sphere {
       Point i_loc, 
       double i_radius,
       Material i_material
-    ) {
-      id = i_id;
-      loc = i_loc;
+    ) : Object(i_id, i_loc, i_material) {
       radius = i_radius;
-      material = i_material;
     }
 
-    int id;
-    Point loc;
     double radius;
-    Material material;
 
     IntersectionEvent intersect(Point origin, Vector direction);
 };

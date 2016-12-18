@@ -5,7 +5,7 @@
 #include "color.h"
 #include "material.h"
 
-#define SCENE 6
+#define SCENE 5
 
 double rand_double() {
   int precision = 10000;
@@ -123,9 +123,6 @@ int main(int argc, char** argv) {
     sc.add_light(0, -0.8, 1, white, white, white);
     sc.add_light(-0.5, -0.5, 0.5, white, white, white);
   }
-
-  std::cout << '\n';
-  sc.test();
 
   std::cout << '\n';
   std::cout << "Rendering...\n";

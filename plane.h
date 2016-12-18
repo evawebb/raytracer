@@ -2,12 +2,13 @@
 #define PLANE_H
 
 #include <iostream>
+#include "object.h"
 #include "point.h"
 #include "vector.h"
 #include "intersection_event.h"
 #include "material.h"
 
-class Plane {
+class Plane : public Object {
   public:
     Plane() {}
     Plane(
@@ -15,17 +16,11 @@ class Plane {
       Point i_loc,
       Vector i_normal,
       Material i_material
-    ) {
-      id = i_id;
-      loc = i_loc;
+    ) : Object(i_id, i_loc, i_material) {
       normal = i_normal.normalized();
-      material = i_material;
     }
 
-    int id;
-    Point loc;
     Vector normal;
-    Material material;
 
     IntersectionEvent intersect(Point origin, Vector direction);
 };

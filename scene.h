@@ -23,12 +23,9 @@ class Scene {
     void add_plane(Point i_loc, Vector i_normal, Material i_material);
     void add_light(double x, double y, double z, Color i_ambient, Color i_diffuse, Color i_specular);
 
-    void test();
-
   private:
     int width, height;
-    std::vector<Sphere> spheres;
-    std::vector<Plane> planes;
+    std::vector<Object*> objects;
     std::vector<Light> lights;
 };
 

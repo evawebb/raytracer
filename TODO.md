@@ -6,6 +6,6 @@
 - [x] Planes
 - [ ] Triangles
 - [ ] Textures
-- [ ] Unified model object
+- [x] Unified model object
 - [ ] Reading in .obj files
 - [ ] Camera transformations

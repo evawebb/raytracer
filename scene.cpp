@@ -56,22 +56,13 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit) {
       -1
     );
     Material material;
-    for (int s = 0; s < spheres.size(); s += 1) {
-      IntersectionEvent ie = spheres[s].intersect(origin, direction);
+    for (int s = 0; s < objects.size(); s += 1) {
+      IntersectionEvent ie = objects[s]->intersect(origin, direction);
 
       if (ie.intersected && ie.distance < n_ie.distance) {
         nearest_intersect = s;
         n_ie = ie;
-        material = spheres[s].material;
-      }
-    }
-    for (int p = 0; p < planes.size(); p += 1) {
-      IntersectionEvent ie = planes[p].intersect(origin, direction);
-
-      if (ie.intersected && ie.distance < n_ie.distance) {
-        nearest_intersect = p;
-        n_ie = ie;
-        material = planes[p].material;
+        material = objects[s]->material;
       }
     }
 
@@ -87,15 +78,8 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit) {
         l_vector = l_vector.normalized();
 
         bool blocked = false;
-        for (int s = 0; s < spheres.size(); s += 1) {
-          IntersectionEvent b_ie = spheres[s].intersect(
-            n_ie.intersection + l_vector * 0.01,
-            l_vector
-          );
-          blocked = blocked || (b_ie.intersected && b_ie.distance < l_distance);
-        }
-        for (int p = 0; p < planes.size(); p += 1) {
-          IntersectionEvent b_ie = planes[p].intersect(
+        for (int s = 0; s < objects.size(); s += 1) {
+          IntersectionEvent b_ie = objects[s]->intersect(
             n_ie.intersection + l_vector * 0.01,
             l_vector
           );
@@ -170,8 +154,8 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit) {
 }
 
 void Scene::add_sphere(double x, double y, double z, double r, Material i_material) {
-  spheres.push_back(Sphere(
-    spheres.size(), 
+  objects.push_back(new Sphere(
+    objects.size(), 
     Point(x, y, z), 
     r, 
     i_material
@@ -179,8 +163,8 @@ void Scene::add_sphere(double x, double y, double z, double r, Material i_materi
 }
 
 void Scene::add_plane(Point i_loc, Vector i_normal, Material i_material) {
-  planes.push_back(Plane(
-    planes.size(),
+  objects.push_back(new Plane(
+    objects.size(),
     i_loc,
     i_normal,
     i_material
@@ -194,16 +178,4 @@ void Scene::add_light(double x, double y, double z, Color i_ambient, Color i_dif
     i_diffuse,
     i_specular
   ));
-}
-
-void Scene::test() {
-  std::cout << "The scene has " << spheres.size() << " spheres.\n";
-  for (int i = 0; i < spheres.size(); i += 1) {
-    std::cout << "Sphere " << i << ": (" << spheres[i].loc.x << ", " << spheres[i].loc.y << ", " << spheres[i].loc.z << "), with radius " << spheres[i].radius << "\n";
-  }
-
-  std::cout << "The scene has " << lights.size() << " lights.\n";
-  for (int i = 0; i < lights.size(); i += 1) {
-    std::cout << "Light " << i << ": (" << lights[i].loc.x << ", " << lights[i].loc.y << ", " << lights[i].loc.z << ")\n";
-  }
 }
