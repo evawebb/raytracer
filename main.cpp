@@ -1,11 +1,12 @@
 #include <cstdlib>
+#include <cmath>
 #include <iostream>
 #include "img_writer.h"
 #include "scene.h"
 #include "color.h"
 #include "material.h"
 
-#define SCENE 5
+#define SCENE 8
 
 double rand_double() {
   int precision = 10000;
@@ -13,6 +14,7 @@ double rand_double() {
 }
 
 int main(int argc, char** argv) {
+  srand(time(NULL));
   int s_l = 1000;
   std::stringstream ss;
   ss << "scene_" << SCENE << ".ppm";
@@ -77,7 +79,6 @@ int main(int argc, char** argv) {
     }
     sc.add_light(0, 0, 0, Color(0.3, 0.3, 0.3), white, white);
   } else if (SCENE == 3) {
-    srand(time(NULL));
     for (int i = 0; i < 100; i += 1) {
       Color c(rand_double(), rand_double(), rand_double());
       Material m(c, c, white, rand_double() * 20, rand_double(), 0.4, 0.4, 0.4);
@@ -113,15 +114,77 @@ int main(int argc, char** argv) {
     double box_size = 1;
     sc.add_sphere(0.5, 0.4, 1.2, 0.5,  red);
     sc.add_sphere(-0.4, 0.3, 0.6, 0.4, blue);
-    sc.add_sphere(0.1, -0.6, 1.5, 0.2, green);
-    sc.add_plane(Point(box_size, 0, 0), Vector(-1, 0, 0), blue);
-    sc.add_plane(Point(-box_size, 0, 0), Vector(1, 0, 0), blue);
+    sc.add_sphere(0.1, -0.6, 1.5, 0.2, mirror);
+    sc.add_plane(Point(box_size, 0, 0), Vector(-1, 0, 0), red);
+    sc.add_plane(Point(-box_size, 0, 0), Vector(1, 0, 0), red);
     sc.add_plane(Point(0, box_size, 0), Vector(0, 1, 0), blue);
     sc.add_plane(Point(0, -box_size, 0), Vector(0, -1, 0), blue);
-    sc.add_plane(Point(0, 0, 2 * box_size + 0.2), Vector(0, -0.1, 1), mirror);
-    sc.add_plane(Point(0, 0, 0), Vector(0, 0, -1), blue);
+    sc.add_plane(Point(0, 0, 2 * box_size + 0.2), Vector(0, -0.1, 1), green);
+    sc.add_plane(Point(0, 0, 0), Vector(0, 0, -1), green);
     sc.add_light(0, -0.8, 1, white, white, white);
     sc.add_light(-0.5, -0.5, 0.5, white, white, white);
+  } else if (SCENE == 7) {
+    sc.add_plane(Point(0, 0, 1), Vector(0, 0, 1), blue);
+    // sc.add_plane(Point(0, 0, 1), Vector(0, 0, -1), blue);
+    sc.add_light(0, 0, 0, white, white, white);
+  } else if (SCENE == 8) {
+    sc.add_plane(Point(0, 0, 3), Vector(0, 0, -1), red);
+    double rad = 0.5;
+    double y_offset = 0.7;
+    double z_offset = 1;
+    double step = 3.14159 / 20;
+    for (double i = 0; i < 2 * 3.14159; i += step) {
+      for (double j = 0; j < 0.5 * 3.14159; j += step) {
+        double top = i;
+        double bottom = i + step;
+        double left = j;
+        double right = j + step;
+
+        sc.add_triangle(
+          Point(
+            rad * sin(left) * sin(top), 
+            rad * cos(left) + y_offset, 
+            rad * sin(left) * cos(top) + z_offset
+          ),
+          Point(
+            rad * sin(left) * sin(bottom), 
+            rad * cos(left) + y_offset, 
+            rad * sin(left) * cos(bottom) + z_offset
+          ),
+          Point(
+            rad * sin(right) * sin(top), 
+            rad * cos(right) + y_offset, 
+            rad * sin(right) * cos(top) + z_offset
+          ),
+          blue
+        );
+        sc.add_triangle(
+          Point(
+            rad * sin(left) * sin(bottom), 
+            rad * cos(left) + y_offset, 
+            rad * sin(left) * cos(bottom) + z_offset
+          ),
+          Point(
+            rad * sin(right) * sin(top), 
+            rad * cos(right) + y_offset, 
+            rad * sin(right) * cos(top) + z_offset
+          ),
+          Point(
+            rad * sin(right) * sin(bottom), 
+            rad * cos(right) + y_offset, 
+            rad * sin(right) * cos(bottom) + z_offset
+          ),
+          blue
+        );
+      }
+    }
+    sc.add_triangle(
+      Point(rand_double(), -rand_double(), 2),
+      Point(rand_double(), -rand_double(), 2),
+      Point(rand_double(), -rand_double(), 2),
+      green
+    );
+    sc.add_light(0, -1, 0, white, white, white);
   }
 
   std::cout << '\n';

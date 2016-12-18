@@ -4,8 +4,11 @@
 - [x] Reflections
 - [x] Perspective
 - [x] Planes
-- [ ] Triangles
+- [x] Triangles
 - [ ] Textures
 - [x] Unified model object
 - [ ] Reading in .obj files
 - [ ] Camera transformations
+- [ ] Why does reversing a plane's normal change its shading? (See scene #7.)
+- [ ] Transparency
+- [ ] Refraction

@@ -7,6 +7,7 @@
 #include <iostream>
 #include "sphere.h"
 #include "plane.h"
+#include "triangle.h"
 #include "intersection_event.h"
 #include "color.h"
 #include "light.h"
@@ -21,6 +22,7 @@ class Scene {
     Color cast_ray(Point origin, Vector direction, int limit);
     void add_sphere(double x, double y, double z, double r, Material i_material);
     void add_plane(Point i_loc, Vector i_normal, Material i_material);
+    void add_triangle(Point i_a, Point i_b, Point i_c, Material i_material);
     void add_light(double x, double y, double z, Color i_ambient, Color i_diffuse, Color i_specular);
 
   private:

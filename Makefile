@@ -1,7 +1,7 @@
 all: raytracer
 
-raytracer: main.o img_writer.o scene.o sphere.o plane.o
-	g++ main.o img_writer.o scene.o sphere.o plane.o -o raytracer
+raytracer: main.o img_writer.o scene.o sphere.o plane.o triangle.o
+	g++ main.o img_writer.o scene.o sphere.o plane.o triangle.o -o raytracer
 
 main.o: main.cpp
 	g++ -c -g main.cpp
@@ -17,3 +17,6 @@ sphere.o: sphere.cpp
 
 plane.o: plane.cpp
 	g++ -c -g plane.cpp
+
+triangle.o: triangle.cpp
+	g++ -c -g triangle.cpp

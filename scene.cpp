@@ -171,6 +171,16 @@ void Scene::add_plane(Point i_loc, Vector i_normal, Material i_material) {
   ));
 }
 
+void Scene::add_triangle(Point i_a, Point i_b, Point i_c, Material i_material) {
+  objects.push_back(new Triangle(
+    objects.size(),
+    i_a,
+    i_b,
+    i_c,
+    i_material
+  ));
+}
+
 void Scene::add_light(double x, double y, double z, Color i_ambient, Color i_diffuse, Color i_specular) {
   lights.push_back(Light(
     Point(x, y, z),
