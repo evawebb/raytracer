@@ -7,7 +7,7 @@
 #include "point.h"
 #include "vector.h"
 #include "intersection_event.h"
-#include "material.h"
+#include "color_material.h"
 
 class Sphere : public Object {
   public:
@@ -16,7 +16,7 @@ class Sphere : public Object {
       int i_id, 
       Point i_loc, 
       double i_radius,
-      Material* i_material
+      ColorMaterial i_material
     ) : Object(i_id, i_loc, i_material) {
       radius = i_radius;
     }

@@ -5,9 +5,9 @@
 #include "scene.h"
 #include "color.h"
 #include "color_material.h"
-#include "texture.h"
+#include "color_texture.h"
 
-#define SCENE 9
+#define SCENE 0
 #define S_L 500
 
 double rand_double() {
@@ -62,21 +62,21 @@ int main(int argc, char** argv) {
   );
 
   if (SCENE == 0) {
-    sc.add_sphere(0.4, -0.4, 0.1, 0.1, &red);
-    sc.add_sphere(0.5, -0.5, 0.5, 0.3, &green);
-    sc.add_sphere(-0.5, -0.2, 1, 0.4, &blue);
+    sc.add_sphere(0.4, -0.4, 0.1, 0.1, red);
+    sc.add_sphere(0.5, -0.5, 0.5, 0.3, green);
+    sc.add_sphere(-0.5, -0.2, 1, 0.4, blue);
     sc.add_light(2, 0, 0, Color(0.3, 0.3, 0.3), white, white);
     sc.add_light(0, 0.2, -1, Color(0.3, 0.3, 0.3), white, white);
   } else if (SCENE == 1) {
-    sc.add_sphere(0, 0.5, 0.5, 0.5, &blue);
-    sc.add_sphere(0, -0.3, 0.3, 0.1, &red);
+    sc.add_sphere(0, 0.5, 0.5, 0.5, blue);
+    sc.add_sphere(0, -0.3, 0.3, 0.1, red);
     sc.add_light(0, -1, 0.1, Color(0.3, 0.3, 0.3), white, white);
     sc.add_light(0, 1, -0.2, Color(0.3, 0.3, 0.3), white, white);
   } else if (SCENE == 2) {
     for (int x = 1; x < 10; x += 1) {
       for (int y = 1; y < 10; y += 1) {
         ColorMaterial m(white, white, white, x * 2, 0, 0.1, 0.2, y * 0.05);
-        sc.add_sphere(x * 0.2 - 1, y * 0.2 - 1, 1, 0.1, &m);
+        sc.add_sphere(x * 0.2 - 1, y * 0.2 - 1, 1, 0.1, m);
       }
     }
     sc.add_light(0, 0, 0, Color(0.3, 0.3, 0.3), white, white);
@@ -89,48 +89,48 @@ int main(int argc, char** argv) {
         rand_double() * 2 - 1,
         rand_double() * 2 + 1,
         rand_double() * 0.2,
-        &m
+        m
       );
     }
     sc.add_light(0, 0, 0, white, white, white);
   } else if (SCENE == 4) {
-    sc.add_sphere(0, 0, 1, 0.5, new ColorMaterial(
+    sc.add_sphere(0, 0, 1, 0.5, ColorMaterial(
       Color(0, 1, 0), Color(0, 1, 0), white,
       2, 0, 0.5, 0.5, 0.5
     ));
     sc.add_light(0, -1, 0, white, white, white);
   } else if (SCENE == 5) {
     double box_size = 1;
-    sc.add_sphere(0.5, 0.4, 1.2, 0.5,  &mirror);
-    sc.add_sphere(-0.4, 0.3, 0.6, 0.4, &mirror);
-    sc.add_sphere(0.1, -0.5, 1.5, 0.2, &mirror);
-    sc.add_plane(Point(box_size, 0, 0), Vector(-1, 0, 0), &red);
-    sc.add_plane(Point(-box_size, 0, 0), Vector(1, 0, 0), &red);
-    sc.add_plane(Point(0, box_size, 0), Vector(0, 1, 0), &blue);
-    sc.add_plane(Point(0, -box_size, 0), Vector(0, -1, 0), &blue);
-    sc.add_plane(Point(0, 0, 2 * box_size), Vector(0, 0, 1), &green);
-    sc.add_plane(Point(0, 0, 0), Vector(0, 0, -1), &green);
+    sc.add_sphere(0.5, 0.4, 1.2, 0.5,  mirror);
+    sc.add_sphere(-0.4, 0.3, 0.6, 0.4, mirror);
+    sc.add_sphere(0.1, -0.5, 1.5, 0.2, mirror);
+    sc.add_plane(Point(box_size, 0, 0), Vector(-1, 0, 0), red);
+    sc.add_plane(Point(-box_size, 0, 0), Vector(1, 0, 0), red);
+    sc.add_plane(Point(0, box_size, 0), Vector(0, 1, 0), blue);
+    sc.add_plane(Point(0, -box_size, 0), Vector(0, -1, 0), blue);
+    sc.add_plane(Point(0, 0, 2 * box_size), Vector(0, 0, 1), green);
+    sc.add_plane(Point(0, 0, 0), Vector(0, 0, -1), green);
     sc.add_light(0, -0.8, 1, white, white, white);
     sc.add_light(-0.5, -0.5, 0.5, white, white, white);
   } else if (SCENE == 6) {
     double box_size = 1;
-    sc.add_sphere(0.5, 0.4, 1.2, 0.5,  &red);
-    sc.add_sphere(-0.4, 0.3, 0.6, 0.4, &blue);
-    sc.add_sphere(0.1, -0.6, 1.5, 0.2, &mirror);
-    sc.add_plane(Point(box_size, 0, 0), Vector(-1, 0, 0), &red);
-    sc.add_plane(Point(-box_size, 0, 0), Vector(1, 0, 0), &red);
-    sc.add_plane(Point(0, box_size, 0), Vector(0, 1, 0), &blue);
-    sc.add_plane(Point(0, -box_size, 0), Vector(0, -1, 0), &blue);
-    sc.add_plane(Point(0, 0, 2 * box_size + 0.2), Vector(0, -0.1, 1), &green);
-    sc.add_plane(Point(0, 0, 0), Vector(0, 0, -1), &green);
+    sc.add_sphere(0.5, 0.4, 1.2, 0.5,  red);
+    sc.add_sphere(-0.4, 0.3, 0.6, 0.4, blue);
+    sc.add_sphere(0.1, -0.6, 1.5, 0.2, mirror);
+    sc.add_plane(Point(box_size, 0, 0), Vector(-1, 0, 0), red);
+    sc.add_plane(Point(-box_size, 0, 0), Vector(1, 0, 0), red);
+    sc.add_plane(Point(0, box_size, 0), Vector(0, 1, 0), blue);
+    sc.add_plane(Point(0, -box_size, 0), Vector(0, -1, 0), blue);
+    sc.add_plane(Point(0, 0, 2 * box_size + 0.2), Vector(0, -0.1, 1), green);
+    sc.add_plane(Point(0, 0, 0), Vector(0, 0, -1), green);
     sc.add_light(0, -0.8, 1, white, white, white);
     sc.add_light(-0.5, -0.5, 0.5, white, white, white);
   } else if (SCENE == 7) {
-    sc.add_plane(Point(0, 0, 1), Vector(0, 0, 1), &blue);
-    // sc.add_plane(Point(0, 0, 1), Vector(0, 0, -1), &blue);
+    sc.add_plane(Point(0, 0, 1), Vector(0, 0, 1), blue);
+    // sc.add_plane(Point(0, 0, 1), Vector(0, 0, -1), blue);
     sc.add_light(0, 0, 0, white, white, white);
   } else if (SCENE == 8) {
-    sc.add_plane(Point(0, 0, 3), Vector(0, 0, -1), &red);
+    sc.add_plane(Point(0, 0, 3), Vector(0, 0, -1), red);
     double rad = 0.5;
     double y_offset = 0.7;
     double z_offset = 1;
@@ -158,7 +158,7 @@ int main(int argc, char** argv) {
             rad * cos(right) + y_offset, 
             rad * sin(right) * cos(top) + z_offset
           ),
-          &blue
+          blue
         );
         sc.add_triangle(
           Point(
@@ -176,7 +176,7 @@ int main(int argc, char** argv) {
             rad * cos(right) + y_offset, 
             rad * sin(right) * cos(bottom) + z_offset
           ),
-          &blue
+          blue
         );
       }
     }
@@ -184,7 +184,7 @@ int main(int argc, char** argv) {
       Point(rand_double(), -rand_double(), 2),
       Point(rand_double(), -rand_double(), 2),
       Point(rand_double(), -rand_double(), 2),
-      &green
+      green
     );
     sc.add_light(0, -1, 0, white, white, white);
   } else if (SCENE == 9) {
@@ -210,25 +210,25 @@ int main(int argc, char** argv) {
       Point(-1, -1,    2),
       Point(-1,  0,  2.5),
       Point( 1, -1,    2),
-      &txed
+      txed
     );
     sc.add_triangle(
       Point( 1, -1,    2),
       Point(-1,  0,  2.5),
       Point( 1,  0,  2.5),
-      &txed
+      txed
     );
     sc.add_triangle(
       Point(-1,  0,  2.5),
       Point(-1,  1,    2),
       Point( 1,  0,  2.5),
-      &txed
+      txed
     );
     sc.add_triangle(
       Point( 1,  0,  2.5),
       Point(-1,  1,    2),
       Point( 1,  1,    2),
-      &txed
+      txed
     );
     sc.add_light(0, -0.5, 0, white, white, white);
   }
