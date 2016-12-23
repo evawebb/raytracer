@@ -16,7 +16,7 @@ class Sphere : public Object {
       int i_id, 
       Point i_loc, 
       double i_radius,
-      Material i_material
+      Material* i_material
     ) : Object(i_id, i_loc, i_material) {
       radius = i_radius;
     }

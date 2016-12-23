@@ -4,9 +4,11 @@
 #include "img_writer.h"
 #include "scene.h"
 #include "color.h"
-#include "material.h"
+#include "color_material.h"
+#include "texture.h"
 
-#define SCENE 8
+#define SCENE 9
+#define S_L 500
 
 double rand_double() {
   int precision = 10000;
@@ -15,7 +17,7 @@ double rand_double() {
 
 int main(int argc, char** argv) {
   srand(time(NULL));
-  int s_l = 1000;
+  int s_l = S_L;
   std::stringstream ss;
   ss << "scene_" << SCENE << ".ppm";
 
@@ -26,7 +28,7 @@ int main(int argc, char** argv) {
   double ai = 0.5;
   double di = 0.5;
   double si = 0.5;
-  Material red(
+  ColorMaterial red(
     Color(1, 0, 0),
     Color(1, 0, 0),
     white,
@@ -34,7 +36,7 @@ int main(int argc, char** argv) {
     0,
     ai, di, si
   );
-  Material green(
+  ColorMaterial green(
     Color(0, 1, 0),
     Color(0, 1, 0),
     white,
@@ -42,7 +44,7 @@ int main(int argc, char** argv) {
     0,
     ai, di, si
   );
-  Material blue(
+  ColorMaterial blue(
     Color(0, 0, 1),
     Color(0, 0, 1),
     white,
@@ -50,7 +52,7 @@ int main(int argc, char** argv) {
     0,
     ai, di, si
   );
-  Material mirror(
+  ColorMaterial mirror(
     white,
     white,
     white,
@@ -60,75 +62,75 @@ int main(int argc, char** argv) {
   );
 
   if (SCENE == 0) {
-    sc.add_sphere(0.4, -0.4, 0.1, 0.1, red);
-    sc.add_sphere(0.5, -0.5, 0.5, 0.3, green);
-    sc.add_sphere(-0.5, -0.2, 1, 0.4, blue);
+    sc.add_sphere(0.4, -0.4, 0.1, 0.1, &red);
+    sc.add_sphere(0.5, -0.5, 0.5, 0.3, &green);
+    sc.add_sphere(-0.5, -0.2, 1, 0.4, &blue);
     sc.add_light(2, 0, 0, Color(0.3, 0.3, 0.3), white, white);
     sc.add_light(0, 0.2, -1, Color(0.3, 0.3, 0.3), white, white);
   } else if (SCENE == 1) {
-    sc.add_sphere(0, 0.5, 0.5, 0.5, blue);
-    sc.add_sphere(0, -0.3, 0.3, 0.1, red);
+    sc.add_sphere(0, 0.5, 0.5, 0.5, &blue);
+    sc.add_sphere(0, -0.3, 0.3, 0.1, &red);
     sc.add_light(0, -1, 0.1, Color(0.3, 0.3, 0.3), white, white);
     sc.add_light(0, 1, -0.2, Color(0.3, 0.3, 0.3), white, white);
   } else if (SCENE == 2) {
     for (int x = 1; x < 10; x += 1) {
       for (int y = 1; y < 10; y += 1) {
-        Material m(white, white, white, x * 2, 0, 0.1, 0.2, y * 0.05);
-        sc.add_sphere(x * 0.2 - 1, y * 0.2 - 1, 1, 0.1, m);
+        ColorMaterial m(white, white, white, x * 2, 0, 0.1, 0.2, y * 0.05);
+        sc.add_sphere(x * 0.2 - 1, y * 0.2 - 1, 1, 0.1, &m);
       }
     }
     sc.add_light(0, 0, 0, Color(0.3, 0.3, 0.3), white, white);
   } else if (SCENE == 3) {
     for (int i = 0; i < 100; i += 1) {
       Color c(rand_double(), rand_double(), rand_double());
-      Material m(c, c, white, rand_double() * 20, rand_double(), 0.4, 0.4, 0.4);
+      ColorMaterial m(c, c, white, rand_double() * 20, rand_double(), 0.4, 0.4, 0.4);
       sc.add_sphere(
         rand_double() * 2 - 1, 
         rand_double() * 2 - 1,
         rand_double() * 2 + 1,
         rand_double() * 0.2,
-        m
+        &m
       );
     }
     sc.add_light(0, 0, 0, white, white, white);
   } else if (SCENE == 4) {
-    sc.add_sphere(0, 0, 1, 0.5, Material(
+    sc.add_sphere(0, 0, 1, 0.5, new ColorMaterial(
       Color(0, 1, 0), Color(0, 1, 0), white,
       2, 0, 0.5, 0.5, 0.5
     ));
     sc.add_light(0, -1, 0, white, white, white);
   } else if (SCENE == 5) {
     double box_size = 1;
-    sc.add_sphere(0.5, 0.4, 1.2, 0.5,  mirror);
-    sc.add_sphere(-0.4, 0.3, 0.6, 0.4, mirror);
-    sc.add_sphere(0.1, -0.5, 1.5, 0.2, mirror);
-    sc.add_plane(Point(box_size, 0, 0), Vector(-1, 0, 0), red);
-    sc.add_plane(Point(-box_size, 0, 0), Vector(1, 0, 0), red);
-    sc.add_plane(Point(0, box_size, 0), Vector(0, 1, 0), blue);
-    sc.add_plane(Point(0, -box_size, 0), Vector(0, -1, 0), blue);
-    sc.add_plane(Point(0, 0, 2 * box_size), Vector(0, 0, 1), green);
-    sc.add_plane(Point(0, 0, 0), Vector(0, 0, -1), green);
+    sc.add_sphere(0.5, 0.4, 1.2, 0.5,  &mirror);
+    sc.add_sphere(-0.4, 0.3, 0.6, 0.4, &mirror);
+    sc.add_sphere(0.1, -0.5, 1.5, 0.2, &mirror);
+    sc.add_plane(Point(box_size, 0, 0), Vector(-1, 0, 0), &red);
+    sc.add_plane(Point(-box_size, 0, 0), Vector(1, 0, 0), &red);
+    sc.add_plane(Point(0, box_size, 0), Vector(0, 1, 0), &blue);
+    sc.add_plane(Point(0, -box_size, 0), Vector(0, -1, 0), &blue);
+    sc.add_plane(Point(0, 0, 2 * box_size), Vector(0, 0, 1), &green);
+    sc.add_plane(Point(0, 0, 0), Vector(0, 0, -1), &green);
     sc.add_light(0, -0.8, 1, white, white, white);
     sc.add_light(-0.5, -0.5, 0.5, white, white, white);
   } else if (SCENE == 6) {
     double box_size = 1;
-    sc.add_sphere(0.5, 0.4, 1.2, 0.5,  red);
-    sc.add_sphere(-0.4, 0.3, 0.6, 0.4, blue);
-    sc.add_sphere(0.1, -0.6, 1.5, 0.2, mirror);
-    sc.add_plane(Point(box_size, 0, 0), Vector(-1, 0, 0), red);
-    sc.add_plane(Point(-box_size, 0, 0), Vector(1, 0, 0), red);
-    sc.add_plane(Point(0, box_size, 0), Vector(0, 1, 0), blue);
-    sc.add_plane(Point(0, -box_size, 0), Vector(0, -1, 0), blue);
-    sc.add_plane(Point(0, 0, 2 * box_size + 0.2), Vector(0, -0.1, 1), green);
-    sc.add_plane(Point(0, 0, 0), Vector(0, 0, -1), green);
+    sc.add_sphere(0.5, 0.4, 1.2, 0.5,  &red);
+    sc.add_sphere(-0.4, 0.3, 0.6, 0.4, &blue);
+    sc.add_sphere(0.1, -0.6, 1.5, 0.2, &mirror);
+    sc.add_plane(Point(box_size, 0, 0), Vector(-1, 0, 0), &red);
+    sc.add_plane(Point(-box_size, 0, 0), Vector(1, 0, 0), &red);
+    sc.add_plane(Point(0, box_size, 0), Vector(0, 1, 0), &blue);
+    sc.add_plane(Point(0, -box_size, 0), Vector(0, -1, 0), &blue);
+    sc.add_plane(Point(0, 0, 2 * box_size + 0.2), Vector(0, -0.1, 1), &green);
+    sc.add_plane(Point(0, 0, 0), Vector(0, 0, -1), &green);
     sc.add_light(0, -0.8, 1, white, white, white);
     sc.add_light(-0.5, -0.5, 0.5, white, white, white);
   } else if (SCENE == 7) {
-    sc.add_plane(Point(0, 0, 1), Vector(0, 0, 1), blue);
-    // sc.add_plane(Point(0, 0, 1), Vector(0, 0, -1), blue);
+    sc.add_plane(Point(0, 0, 1), Vector(0, 0, 1), &blue);
+    // sc.add_plane(Point(0, 0, 1), Vector(0, 0, -1), &blue);
     sc.add_light(0, 0, 0, white, white, white);
   } else if (SCENE == 8) {
-    sc.add_plane(Point(0, 0, 3), Vector(0, 0, -1), red);
+    sc.add_plane(Point(0, 0, 3), Vector(0, 0, -1), &red);
     double rad = 0.5;
     double y_offset = 0.7;
     double z_offset = 1;
@@ -156,7 +158,7 @@ int main(int argc, char** argv) {
             rad * cos(right) + y_offset, 
             rad * sin(right) * cos(top) + z_offset
           ),
-          blue
+          &blue
         );
         sc.add_triangle(
           Point(
@@ -174,7 +176,7 @@ int main(int argc, char** argv) {
             rad * cos(right) + y_offset, 
             rad * sin(right) * cos(bottom) + z_offset
           ),
-          blue
+          &blue
         );
       }
     }
@@ -182,9 +184,53 @@ int main(int argc, char** argv) {
       Point(rand_double(), -rand_double(), 2),
       Point(rand_double(), -rand_double(), 2),
       Point(rand_double(), -rand_double(), 2),
-      green
+      &green
     );
     sc.add_light(0, -1, 0, white, white, white);
+  } else if (SCENE == 9) {
+    // Texture test("test.ppm");
+    // ColorTexture test(Color(1, 1, 0));
+    // Material txed(
+    //   &test,
+    //   &test,
+    //   white,
+    //   3,
+    //   0,
+    //   ai, di, si
+    // );
+    ColorMaterial txed(
+      Color(1, 1, 0),
+      Color(1, 1, 0),
+      white,
+      3,
+      0,
+      0, 1, 0
+    );
+    sc.add_triangle(
+      Point(-1, -1,    2),
+      Point(-1,  0,  2.5),
+      Point( 1, -1,    2),
+      &txed
+    );
+    sc.add_triangle(
+      Point( 1, -1,    2),
+      Point(-1,  0,  2.5),
+      Point( 1,  0,  2.5),
+      &txed
+    );
+    sc.add_triangle(
+      Point(-1,  0,  2.5),
+      Point(-1,  1,    2),
+      Point( 1,  0,  2.5),
+      &txed
+    );
+    sc.add_triangle(
+      Point( 1,  0,  2.5),
+      Point(-1,  1,    2),
+      Point( 1,  1,    2),
+      &txed
+    );
+    sc.add_light(0, -0.5, 0, white, white, white);
   }
 
   std::cout << '\n';
@@ -192,7 +238,7 @@ int main(int argc, char** argv) {
   Color most_intense(0, 0, 0);
   for (int y = 0; y < s_l; y += 1) {
     for (int x = 0; x < s_l; x += 1) {
-      Color c = sc.color_at(x, y, 5, 2);
+      Color c = sc.color_at(x, y, 5, 1);
       iw.set(x, y, c);
 
       if (c.r + c.g + c.b > most_intense.r + most_intense.g + most_intense.b) {
@@ -207,7 +253,7 @@ int main(int argc, char** argv) {
 
   std::cout << '\n';
   std::cout << "Most intense color:\n";
-  std::cout << '(' << most_intense.r << ", " << most_intense.g << ", " << most_intense.b << ")\n";
+  std::cout << most_intense.to_s() << '\n';
 
   std::cout << '\n';
   std::cout << "Writing to file...\n";

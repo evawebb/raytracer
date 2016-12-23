@@ -15,7 +15,7 @@ class Plane : public Object {
       int i_id,
       Point i_loc,
       Vector i_normal,
-      Material i_material
+      Material* i_material
     ) : Object(i_id, i_loc, i_material) {
       normal = i_normal.normalized();
     }

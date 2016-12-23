@@ -13,7 +13,7 @@ class Object {
     Object(
       int i_id,
       Point i_loc,
-      Material i_material
+      Material* i_material
     ) {
       id = i_id;
       loc = i_loc;
@@ -22,7 +22,7 @@ class Object {
 
     int id;
     Point loc;
-    Material material;
+    Material* material;
 
     virtual IntersectionEvent intersect(Point origin, Vector direction) = 0;
 };

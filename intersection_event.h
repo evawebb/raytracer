@@ -13,7 +13,7 @@ class IntersectionEvent {
       Point i_intersection,
       double i_distance,
       Vector i_normal,
-      int i_sphere_id
+      int i_object_id
     ) {
       origin = i_origin;
       direction = i_direction;
@@ -21,14 +21,14 @@ class IntersectionEvent {
       intersection = i_intersection;
       distance = i_distance;
       normal = i_normal;
-      sphere_id = i_sphere_id;
+      object_id = i_object_id;
     }
 
     Point origin, intersection;
     Vector direction, normal;
     bool intersected;
     double distance;
-    int sphere_id;
+    int object_id;
 };
 
 #endif

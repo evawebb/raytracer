@@ -11,7 +11,7 @@
 #include "intersection_event.h"
 #include "color.h"
 #include "light.h"
-#include "material.h"
+#include "color_material.h"
 
 class Scene {
   public:
@@ -19,10 +19,10 @@ class Scene {
     Scene(int w, int h);
 
     Color color_at(int x, int y, double focal_length, int aa);
-    Color cast_ray(Point origin, Vector direction, int limit);
-    void add_sphere(double x, double y, double z, double r, Material i_material);
-    void add_plane(Point i_loc, Vector i_normal, Material i_material);
-    void add_triangle(Point i_a, Point i_b, Point i_c, Material i_material);
+    Color cast_ray(Point origin, Vector direction, int limit, bool print);
+    void add_sphere(double x, double y, double z, double r, Material* i_material);
+    void add_plane(Point i_loc, Vector i_normal, Material* i_material);
+    void add_triangle(Point i_a, Point i_b, Point i_c, Material* i_material);
     void add_light(double x, double y, double z, Color i_ambient, Color i_diffuse, Color i_specular);
 
   private:

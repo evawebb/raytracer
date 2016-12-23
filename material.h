@@ -2,13 +2,14 @@
 #define MATERIAL_H
 
 #include "color.h"
+#include "texture.h"
 
 class Material {
   public:
     Material() {}
     Material(
-      Color i_ambient,
-      Color i_diffuse,
+      Texture* i_ambient_texture,
+      Texture* i_diffuse_texture,
       Color i_specular,
       double i_shininess,
       double i_reflectivity,
@@ -16,8 +17,8 @@ class Material {
       double i_diffuse_intensity,
       double i_specular_intensity
     ) {
-      ambient = i_ambient;
-      diffuse = i_diffuse;
+      ambient_texture = i_ambient_texture,
+      diffuse_texture = i_diffuse_texture,
       specular = i_specular;
       shininess = i_shininess;
       reflectivity = i_reflectivity;
@@ -25,9 +26,11 @@ class Material {
       diffuse_intensity = i_diffuse_intensity;
       specular_intensity = i_specular_intensity;
     }
-    
+
     double shininess, reflectivity, ambient_intensity, diffuse_intensity, specular_intensity;
-    Color ambient, diffuse, specular;
+    Color specular;
+    Texture* ambient_texture;
+    Texture* diffuse_texture;
 };
 
 #endif
