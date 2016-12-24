@@ -27,10 +27,10 @@ class Material {
       specular_intensity = i_specular_intensity;
     }
 
-    double shininess, reflectivity, ambient_intensity, diffuse_intensity, specular_intensity;
-    Color specular;
     Texture* ambient_texture;
     Texture* diffuse_texture;
+    Color specular;
+    double shininess, reflectivity, ambient_intensity, diffuse_intensity, specular_intensity;
 };
 
 #endif

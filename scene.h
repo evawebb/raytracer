@@ -11,7 +11,7 @@
 #include "intersection_event.h"
 #include "color.h"
 #include "light.h"
-#include "color_material.h"
+#include "material.h"
 
 class Scene {
   public:

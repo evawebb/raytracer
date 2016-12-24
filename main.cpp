@@ -7,8 +7,8 @@
 #include "color_material.h"
 #include "color_texture.h"
 
-#define SCENE 0
-#define S_L 500
+#define SCENE 9
+#define S_L 1000
 
 double rand_double() {
   int precision = 10000;
@@ -204,7 +204,7 @@ int main(int argc, char** argv) {
       white,
       3,
       0,
-      0, 1, 0
+      0.5, 0.5, 0.5
     );
     sc.add_triangle(
       Point(-1, -1,    2),
@@ -238,7 +238,7 @@ int main(int argc, char** argv) {
   Color most_intense(0, 0, 0);
   for (int y = 0; y < s_l; y += 1) {
     for (int x = 0; x < s_l; x += 1) {
-      Color c = sc.color_at(x, y, 5, 1);
+      Color c = sc.color_at(x, y, 5, 2);
       iw.set(x, y, c);
 
       if (c.r + c.g + c.b > most_intense.r + most_intense.g + most_intense.b) {
