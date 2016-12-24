@@ -6,7 +6,7 @@
 #include "point.h"
 #include "vector.h"
 #include "intersection_event.h"
-#include "color_material.h"
+#include "material.h"
 
 class Plane : public Object {
   public:
@@ -15,7 +15,7 @@ class Plane : public Object {
       int i_id,
       Point i_loc,
       Vector i_normal,
-      ColorMaterial i_material
+      Material* i_material
     ) : Object(i_id, i_loc, i_material) {
       normal = i_normal.normalized();
     }

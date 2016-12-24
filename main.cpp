@@ -5,9 +5,9 @@
 #include "scene.h"
 #include "color.h"
 #include "color_material.h"
-#include "color_texture.h"
+#include "texture.h"
 
-#define SCENE 9
+#define SCENE 0
 #define S_L 1000
 
 double rand_double() {
@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
   double ai = 0.5;
   double di = 0.5;
   double si = 0.5;
-  ColorMaterial red(
+  ColorMaterial* red = new ColorMaterial(
     Color(1, 0, 0),
     Color(1, 0, 0),
     white,
@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
     0,
     ai, di, si
   );
-  ColorMaterial green(
+  ColorMaterial* green = new ColorMaterial(
     Color(0, 1, 0),
     Color(0, 1, 0),
     white,
@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
     0,
     ai, di, si
   );
-  ColorMaterial blue(
+  ColorMaterial* blue = new ColorMaterial(
     Color(0, 0, 1),
     Color(0, 0, 1),
     white,
@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
     0,
     ai, di, si
   );
-  ColorMaterial mirror(
+  ColorMaterial* mirror = new ColorMaterial(
     white,
     white,
     white,
@@ -75,7 +75,7 @@ int main(int argc, char** argv) {
   } else if (SCENE == 2) {
     for (int x = 1; x < 10; x += 1) {
       for (int y = 1; y < 10; y += 1) {
-        ColorMaterial m(white, white, white, x * 2, 0, 0.1, 0.2, y * 0.05);
+        ColorMaterial* m = new ColorMaterial(white, white, white, x * 2, 0, 0.1, 0.2, y * 0.05);
         sc.add_sphere(x * 0.2 - 1, y * 0.2 - 1, 1, 0.1, m);
       }
     }
@@ -83,7 +83,7 @@ int main(int argc, char** argv) {
   } else if (SCENE == 3) {
     for (int i = 0; i < 100; i += 1) {
       Color c(rand_double(), rand_double(), rand_double());
-      ColorMaterial m(c, c, white, rand_double() * 20, rand_double(), 0.4, 0.4, 0.4);
+      ColorMaterial* m = new ColorMaterial(c, c, white, rand_double() * 20, rand_double(), 0.4, 0.4, 0.4);
       sc.add_sphere(
         rand_double() * 2 - 1, 
         rand_double() * 2 - 1,
@@ -94,7 +94,7 @@ int main(int argc, char** argv) {
     }
     sc.add_light(0, 0, 0, white, white, white);
   } else if (SCENE == 4) {
-    sc.add_sphere(0, 0, 1, 0.5, ColorMaterial(
+    sc.add_sphere(0, 0, 1, 0.5, new ColorMaterial(
       Color(0, 1, 0), Color(0, 1, 0), white,
       2, 0, 0.5, 0.5, 0.5
     ));
@@ -198,7 +198,7 @@ int main(int argc, char** argv) {
     //   0,
     //   ai, di, si
     // );
-    ColorMaterial txed(
+    ColorMaterial* txed = new ColorMaterial(
       Color(1, 1, 0),
       Color(1, 1, 0),
       white,

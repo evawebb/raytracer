@@ -5,7 +5,7 @@
 #include "point.h"
 #include "vector.h"
 #include "intersection_event.h"
-#include "color_material.h"
+#include "material.h"
 
 class Object {
   public:
@@ -13,7 +13,7 @@ class Object {
     Object(
       int i_id,
       Point i_loc,
-      ColorMaterial i_material
+      Material* i_material
     ) {
       id = i_id;
       loc = i_loc;
@@ -22,7 +22,7 @@ class Object {
 
     int id;
     Point loc;
-    ColorMaterial material;
+    Material* material;
 
     virtual IntersectionEvent intersect(Point origin, Vector direction) = 0;
 };

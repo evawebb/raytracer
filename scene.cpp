@@ -59,14 +59,14 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit, bool print) {
       Vector(0, 0, 0),
       -1
     );
-    ColorMaterial material;
+    Material material;
     for (int s = 0; s < objects.size(); s += 1) {
       IntersectionEvent ie = objects[s]->intersect(origin, direction);
 
       if (ie.intersected && ie.distance < n_ie.distance) {
         nearest_intersect = s;
         n_ie = ie;
-        material = objects[s]->material;
+        material = *(objects[s]->material);
       }
     }
 
@@ -206,7 +206,7 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit, bool print) {
   }
 }
 
-void Scene::add_sphere(double x, double y, double z, double r, ColorMaterial i_material) {
+void Scene::add_sphere(double x, double y, double z, double r, Material* i_material) {
   objects.push_back(new Sphere(
     objects.size(), 
     Point(x, y, z), 
@@ -215,7 +215,7 @@ void Scene::add_sphere(double x, double y, double z, double r, ColorMaterial i_m
   ));
 }
 
-void Scene::add_plane(Point i_loc, Vector i_normal, ColorMaterial i_material) {
+void Scene::add_plane(Point i_loc, Vector i_normal, Material* i_material) {
   objects.push_back(new Plane(
     objects.size(),
     i_loc,
@@ -224,7 +224,7 @@ void Scene::add_plane(Point i_loc, Vector i_normal, ColorMaterial i_material) {
   ));
 }
 
-void Scene::add_triangle(Point i_a, Point i_b, Point i_c, ColorMaterial i_material) {
+void Scene::add_triangle(Point i_a, Point i_b, Point i_c, Material* i_material) {
   objects.push_back(new Triangle(
     objects.size(),
     i_a,

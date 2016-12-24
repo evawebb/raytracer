@@ -6,7 +6,7 @@
 #include "point.h"
 #include "vector.h"
 #include "intersection_event.h"
-#include "color_material.h"
+#include "material.h"
 
 class Triangle : public Object {
   public:
@@ -16,7 +16,7 @@ class Triangle : public Object {
       Point i_a,
       Point i_b,
       Point i_c,
-      ColorMaterial i_material
+      Material* i_material
     ) : Object(i_id, i_a, i_material) {
       a = i_a;
       b = i_b;
