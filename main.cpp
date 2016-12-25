@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
   srand(time(NULL));
   int s_l = S_L;
   std::stringstream ss;
-  ss << "scene_" << SCENE << ".ppm";
+  ss << "scene_" << time(NULL) << '_' << SCENE << ".ppm";
 
   ImgWriter iw(ss.str(), s_l, s_l);
   Scene sc(s_l, s_l);
