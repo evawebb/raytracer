@@ -60,48 +60,12 @@ IntersectionEvent Sphere::intersect(Point origin, Vector direction) {
           0
         );
       } else {
-        return IntersectionEvent(
-          origin,
-          direction,
-          false,
-          Point(0, 0, 0),
-          t,
-          Vector(0, 0, 0),
-          id,
-          0,
-          0,
-          0,
-          0
-        );
+        return IntersectionEvent(origin, direction);
       }
     } else {
-      return IntersectionEvent(
-        origin,
-        direction,
-        false,
-        Point(0, 0, 0),
-        -1,
-        Vector(0, 0, 0),
-        -1,
-        -1,
-        -1,
-        -1,
-        -1
-      );
+      return IntersectionEvent(origin, direction);
     }
   } else {
-    return IntersectionEvent(
-      origin,
-      direction,
-      false,
-      Point(0, 0, 0),
-      -2,
-      Vector(0, 0, 0),
-      -1,
-      -1,
-      -1,
-      -1,
-      -1
-    );
+    return IntersectionEvent(origin, direction);
   }
 }

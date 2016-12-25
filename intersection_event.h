@@ -6,6 +6,19 @@
 class IntersectionEvent {
   public:
     IntersectionEvent() {}
+    IntersectionEvent(Point i_origin, Vector i_direction) {
+      origin = i_origin;
+      direction = i_direction;
+      intersected = false;
+      intersection = Point(0, 0, 0);
+      distance = -1;
+      normal = Vector(0, 0, 0);
+      object_id = -1;
+      u = -1;
+      v = -1;
+      texel_s = -1;
+      texel_t = -1;
+    }
     IntersectionEvent(
       Point i_origin,
       Vector i_direction,

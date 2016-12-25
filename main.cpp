@@ -299,7 +299,7 @@ int main(int argc, char** argv) {
       m
     );
 
-    sc.add_sphere(0, 0, 1.1, 0.4, mirror);
+    sc.add_sphere(0, 0.2, 1.1, 0.4, mirror);
     sc.add_light(0, -0.2, 0, white, white, white);
     sc.add_light(0, -0.8, 1.1, white, white, white);
   }

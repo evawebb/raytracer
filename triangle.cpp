@@ -18,14 +18,6 @@ IntersectionEvent Triangle::intersect(Point origin, Vector direction) {
     // These are the barycentric coordinates of the intersection point
     // within the triangle. u is the influence along the a_to_b vector,
     // and v is the influence along the a_to_c vector.
-    // double dot_c_c = a_to_c.dot(a_to_c);
-    // double dot_c_b = a_to_c.dot(a_to_b);
-    // double dot_c_i = a_to_c.dot(a_to_i);
-    // double dot_b_b = a_to_b.dot(a_to_b);
-    // double dot_b_i = a_to_b.dot(a_to_i);
-    // double denom = 1.0 / (dot_c_c * dot_b_b - dot_c_b * dot_c_b);
-    // double u = (dot_b_b * dot_c_i - dot_c_b * dot_b_i) * denom;
-    // double v = (dot_c_c * dot_b_i - dot_c_b * dot_c_i) * denom;
     double dot_b_b = a_to_b.dot(a_to_b);
     double dot_b_c = a_to_b.dot(a_to_c);
     double dot_c_c = a_to_c.dot(a_to_c);
@@ -58,33 +50,9 @@ IntersectionEvent Triangle::intersect(Point origin, Vector direction) {
         texel_t
       );
     } else {
-      return IntersectionEvent(
-        origin,
-        direction,
-        false,
-        Point(0, 0, 0),
-        t,
-        Vector(0, 0, 0),
-        -1,
-        u,
-        v,
-        u,
-        v
-      );
+      return IntersectionEvent(origin, direction);
     }
   } else {
-    return IntersectionEvent(
-      origin,
-      direction,
-      false,
-      Point(0, 0, 0),
-      -1,
-      Vector(0, 0, 0),
-      -1,
-      -1,
-      -1,
-      -1,
-      -1
-    );
+    return IntersectionEvent(origin, direction);
   }
 }
