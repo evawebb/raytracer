@@ -7,8 +7,9 @@
 #include "color_material.h"
 #include "texture.h"
 
-#define SCENE 9
+#define SCENE 10
 #define S_L 1000
+#define ANTIALIASING 2
 
 double rand_double() {
   int precision = 10000;
@@ -119,9 +120,9 @@ int main(int argc, char** argv) {
     sc.add_sphere(0.1, -0.6, 1.5, 0.2, mirror);
     sc.add_plane(Point(box_size, 0, 0), Vector(-1, 0, 0), red);
     sc.add_plane(Point(-box_size, 0, 0), Vector(1, 0, 0), red);
-    sc.add_plane(Point(0, box_size, 0), Vector(0, 1, 0), blue);
+    sc.add_plane(Point(0, box_size, 0), Vector(0, 1, 0), mirror);
     sc.add_plane(Point(0, -box_size, 0), Vector(0, -1, 0), blue);
-    sc.add_plane(Point(0, 0, 2 * box_size + 0.2), Vector(0, -0.1, 1), green);
+    sc.add_plane(Point(0, 0, 2 * box_size + 0.2), Vector(0, 0, 1), green);
     sc.add_plane(Point(0, 0, 0), Vector(0, 0, -1), green);
     sc.add_light(0, -0.8, 1, white, white, white);
     sc.add_light(-0.5, -0.5, 0.5, white, white, white);
@@ -188,40 +189,119 @@ int main(int argc, char** argv) {
     );
     sc.add_light(0, -1, 0, white, white, white);
   } else if (SCENE == 9) {
-    Texture* tex = new Texture("tex.ppm");
+    Texture* elsa = new Texture("elsa.ppm");
     Material* txed = new Material(
-      tex,
-      tex,
+      elsa,
+      elsa,
       white,
       3,
       0,
-      0.5, 0.5, 0
+      ai, di, si
     );
     sc.add_triangle(
       Point(-1, -1,    2), 0, 0,
-      Point(-1,  0,  2.5), 0, 1,
-      Point( 1, -1,    2), 1, 0,
+      Point(-1,  1,    1), 0, 1,
+      Point( 1, -1,  1.5), 1, 0,
       txed
     );
     sc.add_triangle(
-      Point( 1, -1,    2), 1, 0,
-      Point(-1,  0,  2.5), 0, 1,
-      Point( 1,  0,  2.5), 1, 1,
-      txed
-    );
-    sc.add_triangle(
-      Point(-1,  0,  2.5), 0, 0,
-      Point(-1,  1,    2), 0, 1,
-      Point( 1,  0,  2.5), 1, 0,
-      txed
-    );
-    sc.add_triangle(
-      Point( 1,  0,  2.5), 1, 0,
-      Point(-1,  1,    2), 0, 1,
-      Point( 1,  1,    2), 1, 1,
+      Point( 1, -1,  1.5), 1, 0,
+      Point(-1,  1,    1), 0, 1,
+      Point( 1,  1,  0.5), 1, 1,
       txed
     );
     sc.add_light(0, -0.5, 0, white, white, white);
+  } else if (SCENE == 10) {
+    Texture* sakura = new Texture("sakura.ppm");
+    Material* m = new Material(
+      sakura,
+      sakura,
+      white,
+      3, 0,
+      ai, di, si
+    );
+
+    sc.add_triangle(
+      Point(-1, -1,  1.9), 0, 0,
+      Point( 1, -1,  1.9), 1, 0,
+      Point(-1,  1,  1.9), 0, 1,
+      m
+    );
+    sc.add_triangle(
+      Point( 1, -1,  1.9), 1, 0,
+      Point( 1,  1,  1.9), 1, 1,
+      Point(-1,  1,  1.9), 0, 1,
+      m
+    );
+
+    sc.add_triangle(
+      Point( 1, -1,  1.9), 0, 0,
+      Point( 1, -1, -0.1), 1, 0,
+      Point( 1,  1,  1.9), 0, 1,
+      m
+    );
+    sc.add_triangle(
+      Point( 1, -1, -0.1), 1, 0,
+      Point( 1,  1, -0.1), 1, 1,
+      Point( 1,  1,  1.9), 0, 1,
+      m
+    );
+
+    sc.add_triangle(
+      Point( 1, -1, -0.1), 0, 0,
+      Point(-1, -1, -0.1), 1, 0,
+      Point( 1,  1, -0.1), 0, 1,
+      m
+    );
+    sc.add_triangle(
+      Point(-1, -1, -0.1), 1, 0,
+      Point(-1,  1, -0.1), 1, 1,
+      Point( 1,  1, -0.1), 0, 1,
+      m
+    );
+
+    sc.add_triangle(
+      Point(-1, -1, -0.1), 0, 0,
+      Point(-1, -1,  1.9), 1, 0,
+      Point(-1,  1, -0.1), 0, 1,
+      m
+    );
+    sc.add_triangle(
+      Point(-1, -1,  1.9), 1, 0,
+      Point(-1,  1,  1.9), 1, 1,
+      Point(-1,  1, -0.1), 0, 1,
+      m
+    );
+
+    sc.add_triangle(
+      Point(-1, -1, -0.1), 0, 0,
+      Point( 1, -1, -0.1), 1, 0,
+      Point(-1, -1,  1.9), 0, 1,
+      m
+    );
+    sc.add_triangle(
+      Point( 1, -1, -0.1), 1, 0,
+      Point( 1, -1,  1.9), 1, 1,
+      Point(-1, -1,  1.9), 0, 1,
+      m
+    );
+
+    sc.add_triangle(
+      Point(-1,  1,  1.9), 0, 0,
+      Point( 1,  1,  1.9), 1, 0,
+      Point(-1,  1, -0.1), 0, 1,
+      m
+    );
+    sc.add_triangle(
+      Point( 1,  1,  1.9), 1, 0,
+      Point( 1,  1, -0.1), 1, 1, 
+      Point(-1,  1, -0.1), 0, 1,
+      m
+    );
+
+    sc.add_sphere(0, 0, 1.1, 0.4, mirror);
+    sc.add_light(0, -0.2, 0, white, white, white);
+    sc.add_light(0, -0.8, 1.1, white, white, white);
   }
 
   std::cout << '\n';
@@ -229,7 +309,7 @@ int main(int argc, char** argv) {
   Color most_intense(0, 0, 0);
   for (int y = 0; y < s_l; y += 1) {
     for (int x = 0; x < s_l; x += 1) {
-      Color c = sc.color_at(x, y, 5, 1);
+      Color c = sc.color_at(x, y, 5, ANTIALIASING);
       iw.set(x, y, c);
 
       if (c.r + c.g + c.b > most_intense.r + most_intense.g + most_intense.b) {

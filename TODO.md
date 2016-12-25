@@ -5,7 +5,7 @@
 - [x] Perspective
 - [x] Planes
 - [x] Triangles
-- [ ] Textures
+- [x] Textures
 - [x] Unified model object
 - [ ] Reading in .obj files
 - [ ] Camera transformations

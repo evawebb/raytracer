@@ -5,6 +5,7 @@
 #include <sstream>
 #include <string>
 #include <iostream>
+#include <vector>
 #include "color.h"
 
 class Texture {
