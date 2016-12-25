@@ -12,6 +12,7 @@
 #include "color.h"
 #include "light.h"
 #include "material.h"
+#include "model.h"
 
 class Scene {
   public:
@@ -20,19 +21,12 @@ class Scene {
 
     Color color_at(int x, int y, double focal_length, int aa);
     Color cast_ray(Point origin, Vector direction, int limit, bool print);
-    void add_sphere(double x, double y, double z, double r, Material* i_material);
-    void add_plane(Point i_loc, Vector i_normal, Material* i_material);
-    void add_triangle(
-      Point i_a, double i_a_texel_s, double i_a_texel_t,
-      Point i_b, double i_b_texel_s, double i_b_texel_t,
-      Point i_c, double i_c_texel_s, double i_c_texel_t,
-      Material* i_material
-    );
+    void add_model(Model m);
     void add_light(double x, double y, double z, Color i_ambient, Color i_diffuse, Color i_specular);
 
   private:
     int width, height;
-    std::vector<Object*> objects;
+    std::vector<Model> models;
     std::vector<Light> lights;
 };
 

@@ -7,7 +7,6 @@
 #include "color_material.h"
 #include "texture.h"
 
-#define SCENE 10
 #define S_L 1000
 #define ANTIALIASING 2
 
@@ -17,10 +16,15 @@ double rand_double() {
 }
 
 int main(int argc, char** argv) {
+  int scene = 0;
+  if (argc >= 2) {
+    scene = atoi(argv[1]);
+  }
+
   srand(time(NULL));
   int s_l = S_L;
   std::stringstream ss;
-  ss << "scene_" << time(NULL) << '_' << SCENE << ".ppm";
+  ss << "scene_" << time(NULL) << '_' << scene << ".ppm";
 
   ImgWriter iw(ss.str(), s_l, s_l);
   Scene sc(s_l, s_l);
@@ -62,76 +66,130 @@ int main(int argc, char** argv) {
     0, 0, si
   );
 
-  if (SCENE == 0) {
-    sc.add_sphere(0.4, -0.4, 0.1, 0.1, red);
-    sc.add_sphere(0.5, -0.5, 0.5, 0.3, green);
-    sc.add_sphere(-0.5, -0.2, 1, 0.4, blue);
+  if (scene == 0) {
+    Model s1(0);
+    s1.add_sphere(Point(0.4, -0.4, 0.1), 0.1, red);
+
+    Model s2(1);
+    s2.add_sphere(Point(0.5, -0.5, 0.5), 0.3, green);
+
+    Model s3(2);
+    s3.add_sphere(Point(-0.5, -0.2, 1), 0.4, blue);
+
+    sc.add_model(s1);
+    sc.add_model(s2);
+    sc.add_model(s3);
+
     sc.add_light(2, 0, 0, Color(0.3, 0.3, 0.3), white, white);
     sc.add_light(0, 0.2, -1, Color(0.3, 0.3, 0.3), white, white);
-  } else if (SCENE == 1) {
-    sc.add_sphere(0, 0.5, 0.5, 0.5, blue);
-    sc.add_sphere(0, -0.3, 0.3, 0.1, red);
+  } else if (scene == 1) {
+    Model s1(0);
+    s1.add_sphere(Point(0, 0.5, 0.5), 0.5, blue);
+
+    Model s2(1);
+    s2.add_sphere(Point(0, -0.3, 0.3), 0.1, red);
+
+    sc.add_model(s1);
+    sc.add_model(s2);
+
     sc.add_light(0, -1, 0.1, Color(0.3, 0.3, 0.3), white, white);
     sc.add_light(0, 1, -0.2, Color(0.3, 0.3, 0.3), white, white);
-  } else if (SCENE == 2) {
+  } else if (scene == 2) {
+    Model m(0);
     for (int x = 1; x < 10; x += 1) {
       for (int y = 1; y < 10; y += 1) {
-        ColorMaterial* m = new ColorMaterial(white, white, white, x * 2, 0, 0.1, 0.2, y * 0.05);
-        sc.add_sphere(x * 0.2 - 1, y * 0.2 - 1, 1, 0.1, m);
+        ColorMaterial* mat = new ColorMaterial(white, white, white, x * 2, 0, 0.1, 0.2, y * 0.05);
+        m.add_sphere(Point(x * 0.2 - 1, y * 0.2 - 1, 1), 0.1, mat);
       }
     }
+
+    sc.add_model(m);
+
     sc.add_light(0, 0, 0, Color(0.3, 0.3, 0.3), white, white);
-  } else if (SCENE == 3) {
+  } else if (scene == 3) {
+    Model m(0);
     for (int i = 0; i < 100; i += 1) {
       Color c(rand_double(), rand_double(), rand_double());
-      ColorMaterial* m = new ColorMaterial(c, c, white, rand_double() * 20, rand_double(), 0.4, 0.4, 0.4);
-      sc.add_sphere(
-        rand_double() * 2 - 1, 
-        rand_double() * 2 - 1,
-        rand_double() * 2 + 1,
+      ColorMaterial* mat = new ColorMaterial(c, c, white, rand_double() * 20, rand_double(), 0.4, 0.4, 0.4);
+      m.add_sphere(
+        Point(
+          rand_double() * 2 - 1, 
+          rand_double() * 2 - 1,
+          rand_double() * 2 + 1
+        ),
         rand_double() * 0.2,
-        m
+        mat
       );
     }
+
+    sc.add_model(m);
+
     sc.add_light(0, 0, 0, white, white, white);
-  } else if (SCENE == 4) {
-    sc.add_sphere(0, 0, 1, 0.5, new ColorMaterial(
+  } else if (scene == 4) {
+    Model m(0);
+    m.add_sphere(Point(0, 0, 1), 0.5, new ColorMaterial(
       Color(0, 1, 0), Color(0, 1, 0), white,
       2, 0, 0.5, 0.5, 0.5
     ));
+
+    sc.add_model(m);
+
     sc.add_light(0, -1, 0, white, white, white);
-  } else if (SCENE == 5) {
+  } else if (scene == 5) {
     double box_size = 1;
-    sc.add_sphere(0.5, 0.4, 1.2, 0.5,  mirror);
-    sc.add_sphere(-0.4, 0.3, 0.6, 0.4, mirror);
-    sc.add_sphere(0.1, -0.5, 1.5, 0.2, mirror);
-    sc.add_plane(Point(box_size, 0, 0), Vector(-1, 0, 0), red);
-    sc.add_plane(Point(-box_size, 0, 0), Vector(1, 0, 0), red);
-    sc.add_plane(Point(0, box_size, 0), Vector(0, 1, 0), blue);
-    sc.add_plane(Point(0, -box_size, 0), Vector(0, -1, 0), blue);
-    sc.add_plane(Point(0, 0, 2 * box_size), Vector(0, 0, 1), green);
-    sc.add_plane(Point(0, 0, 0), Vector(0, 0, -1), green);
+
+    Model spheres(0);
+    spheres.add_sphere(Point(0.5, 0.4, 1.2), 0.5,  mirror);
+    spheres.add_sphere(Point(-0.4, 0.3, 0.6), 0.4, mirror);
+    spheres.add_sphere(Point(0.1, -0.5, 1.5), 0.2, mirror);
+
+    Model planes(1);
+    planes.add_plane(Point(box_size, 0, 0), Vector(-1, 0, 0), red);
+    planes.add_plane(Point(-box_size, 0, 0), Vector(1, 0, 0), red);
+    planes.add_plane(Point(0, box_size, 0), Vector(0, 1, 0), blue);
+    planes.add_plane(Point(0, -box_size, 0), Vector(0, -1, 0), blue);
+    planes.add_plane(Point(0, 0, 2 * box_size), Vector(0, 0, 1), green);
+    planes.add_plane(Point(0, 0, 0), Vector(0, 0, -1), green);
+
+    sc.add_model(spheres);
+    sc.add_model(planes);
+
     sc.add_light(0, -0.8, 1, white, white, white);
     sc.add_light(-0.5, -0.5, 0.5, white, white, white);
-  } else if (SCENE == 6) {
+  } else if (scene == 6) {
     double box_size = 1;
-    sc.add_sphere(0.5, 0.4, 1.2, 0.5,  red);
-    sc.add_sphere(-0.4, 0.3, 0.6, 0.4, blue);
-    sc.add_sphere(0.1, -0.6, 1.5, 0.2, mirror);
-    sc.add_plane(Point(box_size, 0, 0), Vector(-1, 0, 0), red);
-    sc.add_plane(Point(-box_size, 0, 0), Vector(1, 0, 0), red);
-    sc.add_plane(Point(0, box_size, 0), Vector(0, 1, 0), mirror);
-    sc.add_plane(Point(0, -box_size, 0), Vector(0, -1, 0), blue);
-    sc.add_plane(Point(0, 0, 2 * box_size + 0.2), Vector(0, 0, 1), green);
-    sc.add_plane(Point(0, 0, 0), Vector(0, 0, -1), green);
+
+    Model spheres(0);
+    spheres.add_sphere(Point(0.5, 0.4, 1.2), 0.5,  red);
+    spheres.add_sphere(Point(-0.4, 0.3, 0.6), 0.4, blue);
+    spheres.add_sphere(Point(0.1, -0.6, 1.5), 0.2, mirror);
+
+    Model planes(1);
+    planes.add_plane(Point(box_size, 0, 0), Vector(-1, 0, 0), red);
+    planes.add_plane(Point(-box_size, 0, 0), Vector(1, 0, 0), red);
+    planes.add_plane(Point(0, box_size, 0), Vector(0, 1, 0), mirror);
+    planes.add_plane(Point(0, -box_size, 0), Vector(0, -1, 0), blue);
+    planes.add_plane(Point(0, 0, 2 * box_size + 0.2), Vector(0, 0, 1), green);
+    planes.add_plane(Point(0, 0, 0), Vector(0, 0, -1), green);
+
+    sc.add_model(spheres);
+    sc.add_model(planes);
+
     sc.add_light(0, -0.8, 1, white, white, white);
     sc.add_light(-0.5, -0.5, 0.5, white, white, white);
-  } else if (SCENE == 7) {
-    sc.add_plane(Point(0, 0, 1), Vector(0, 0, 1), blue);
-    // sc.add_plane(Point(0, 0, 1), Vector(0, 0, -1), blue);
+  } else if (scene == 7) {
+    Model m(0);
+    m.add_plane(Point(0, 0, 1), Vector(0, 0, 1), blue);
+    // m.add_plane(Point(0, 0, 1), Vector(0, 0, -1), blue);
+
+    sc.add_model(m);
+
     sc.add_light(0, 0, 0, white, white, white);
-  } else if (SCENE == 8) {
-    sc.add_plane(Point(0, 0, 3), Vector(0, 0, -1), red);
+  } else if (scene == 8) {
+    Model bg(0);
+    bg.add_plane(Point(0, 0, 3), Vector(0, 0, -1), red);
+
+    Model hemisphere(1);
     double rad = 0.5;
     double y_offset = 0.7;
     double z_offset = 1;
@@ -143,7 +201,7 @@ int main(int argc, char** argv) {
         double left = j;
         double right = j + step;
 
-        sc.add_triangle(
+        hemisphere.add_triangle(
           Point(
             rad * sin(left) * sin(top), 
             rad * cos(left) + y_offset, 
@@ -161,7 +219,7 @@ int main(int argc, char** argv) {
           ), 0, 0,
           blue
         );
-        sc.add_triangle(
+        hemisphere.add_triangle(
           Point(
             rad * sin(left) * sin(bottom), 
             rad * cos(left) + y_offset, 
@@ -181,14 +239,21 @@ int main(int argc, char** argv) {
         );
       }
     }
-    sc.add_triangle(
+
+    Model triangle(2);
+    triangle.add_triangle(
       Point(rand_double(), -rand_double(), 2), 0, 0,
       Point(rand_double(), -rand_double(), 2), 0, 0,
       Point(rand_double(), -rand_double(), 2), 0, 0,
       green
     );
+
+    sc.add_model(bg);
+    sc.add_model(hemisphere);
+    sc.add_model(triangle);
+
     sc.add_light(0, -1, 0, white, white, white);
-  } else if (SCENE == 9) {
+  } else if (scene == 9) {
     Texture* elsa = new Texture("elsa.ppm");
     Material* txed = new Material(
       elsa,
@@ -198,20 +263,25 @@ int main(int argc, char** argv) {
       0,
       ai, di, si
     );
-    sc.add_triangle(
+
+    Model m(0);
+    m.add_triangle(
       Point(-1, -1,    2), 0, 0,
       Point(-1,  1,    1), 0, 1,
       Point( 1, -1,  1.5), 1, 0,
       txed
     );
-    sc.add_triangle(
+    m.add_triangle(
       Point( 1, -1,  1.5), 1, 0,
       Point(-1,  1,    1), 0, 1,
       Point( 1,  1,  0.5), 1, 1,
       txed
     );
+
+    sc.add_model(m);
+
     sc.add_light(0, -0.5, 0, white, white, white);
-  } else if (SCENE == 10) {
+  } else if (scene == 10) {
     Texture* sakura = new Texture("sakura.ppm");
     Material* m = new Material(
       sakura,
@@ -219,93 +289,125 @@ int main(int argc, char** argv) {
       white,
       3, 0,
       ai, di, si
-    );
+    ); 
 
-    sc.add_triangle(
+    Model box(0);
+    box.add_triangle(
       Point(-1, -1,  1.9), 0, 0,
       Point( 1, -1,  1.9), 1, 0,
       Point(-1,  1,  1.9), 0, 1,
       m
     );
-    sc.add_triangle(
+    box.add_triangle(
       Point( 1, -1,  1.9), 1, 0,
       Point( 1,  1,  1.9), 1, 1,
       Point(-1,  1,  1.9), 0, 1,
       m
     );
 
-    sc.add_triangle(
+    box.add_triangle(
       Point( 1, -1,  1.9), 0, 0,
       Point( 1, -1, -0.1), 1, 0,
       Point( 1,  1,  1.9), 0, 1,
       m
     );
-    sc.add_triangle(
+    box.add_triangle(
       Point( 1, -1, -0.1), 1, 0,
       Point( 1,  1, -0.1), 1, 1,
       Point( 1,  1,  1.9), 0, 1,
       m
     );
 
-    sc.add_triangle(
+    box.add_triangle(
       Point( 1, -1, -0.1), 0, 0,
       Point(-1, -1, -0.1), 1, 0,
       Point( 1,  1, -0.1), 0, 1,
       m
     );
-    sc.add_triangle(
+    box.add_triangle(
       Point(-1, -1, -0.1), 1, 0,
       Point(-1,  1, -0.1), 1, 1,
       Point( 1,  1, -0.1), 0, 1,
       m
     );
 
-    sc.add_triangle(
+    box.add_triangle(
       Point(-1, -1, -0.1), 0, 0,
       Point(-1, -1,  1.9), 1, 0,
       Point(-1,  1, -0.1), 0, 1,
       m
     );
-    sc.add_triangle(
+    box.add_triangle(
       Point(-1, -1,  1.9), 1, 0,
       Point(-1,  1,  1.9), 1, 1,
       Point(-1,  1, -0.1), 0, 1,
       m
     );
 
-    sc.add_triangle(
+    box.add_triangle(
       Point(-1, -1, -0.1), 0, 0,
       Point( 1, -1, -0.1), 1, 0,
       Point(-1, -1,  1.9), 0, 1,
       m
     );
-    sc.add_triangle(
+    box.add_triangle(
       Point( 1, -1, -0.1), 1, 0,
       Point( 1, -1,  1.9), 1, 1,
       Point(-1, -1,  1.9), 0, 1,
       m
     );
 
-    sc.add_triangle(
+    box.add_triangle(
       Point(-1,  1,  1.9), 0, 0,
       Point( 1,  1,  1.9), 1, 0,
       Point(-1,  1, -0.1), 0, 1,
       m
     );
-    sc.add_triangle(
+    box.add_triangle(
       Point( 1,  1,  1.9), 1, 0,
       Point( 1,  1, -0.1), 1, 1, 
       Point(-1,  1, -0.1), 0, 1,
       m
     );
 
-    sc.add_sphere(0, 0.2, 1.1, 0.4, mirror);
+    Model sphere(1);
+    sphere.add_sphere(Point(0, 0.2, 1.1), 0.4, mirror);
+
+    sc.add_model(box);
+    sc.add_model(sphere);
+
     sc.add_light(0, -0.2, 0, white, white, white);
     sc.add_light(0, -0.8, 1.1, white, white, white);
+  } else if (scene == 11) {
+    Texture* elsa = new Texture("elsa.ppm");
+    Material* txed = new Material(
+      elsa,
+      elsa,
+      white,
+      3,
+      0,
+      ai, di, si
+    );
+    Model model(0);
+    model.add_triangle(
+      Point(-1, -1,    2), 0, 0,
+      Point(-1,  1,    1), 0, 1,
+      Point( 1, -1,  1.5), 1, 0,
+      txed
+    );
+    model.add_triangle(
+      Point( 1, -1,  1.5), 1, 0,
+      Point(-1,  1,    1), 0, 1,
+      Point( 1,  1,  0.5), 1, 1,
+      txed
+    );
+
+    sc.add_model(model);
+    sc.add_light(0, -0.5, 0, white, white, white);
   }
 
   std::cout << '\n';
-  std::cout << "Rendering...\n";
+  std::cout << "Rendering scene " << scene << "...\n";
   Color most_intense(0, 0, 0);
   for (int y = 0; y < s_l; y += 1) {
     for (int x = 0; x < s_l; x += 1) {

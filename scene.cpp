@@ -49,28 +49,12 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit, bool print) {
     if (print) {
       std::cout << "\nRay casting results summary:\n";
     }
-    int nearest_intersect = -1;
-    IntersectionEvent n_ie(
-      Point(0, 0, 0),
-      Vector(0, 0, 0),
-      false,
-      Point(0, 0, 0),
-      1000000,
-      Vector(0, 0, 0),
-      -1,
-      -1,
-      -1,
-      -1,
-      -1
-    );
-    Material material;
-    for (int s = 0; s < objects.size(); s += 1) {
-      IntersectionEvent ie = objects[s]->intersect(origin, direction);
+    IntersectionEvent n_ie;
+    for (int m = 0; m < models.size(); m += 1) {
+      IntersectionEvent ie = models[m].intersect(origin, direction);
 
       if (ie.intersected && ie.distance < n_ie.distance) {
-        nearest_intersect = s;
         n_ie = ie;
-        material = *(objects[s]->material);
       }
     }
 
@@ -78,24 +62,24 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit, bool print) {
       std::cout << "The intersection distance was: " << n_ie.distance << '\n';
     }
 
-    if (nearest_intersect >= 0) {
+    if (n_ie.intersected) {
       Color diffuse_comp(0, 0, 0);
       Color ambient_comp(0, 0, 0);
       Color specular_comp(0, 0, 0);
       Color reflective_comp(0, 0, 0);
 
       if (print) {
-        std::cout << "The intersection was at " << n_ie.intersection.to_s() << " on object " << n_ie.object_id << ".\n";
+        std::cout << "The intersection was at " << n_ie.intersection.to_s() << " on object " << n_ie.object_id << " of model " << n_ie.model_id << ".\n";
         std::cout << "Barycentric u: " << n_ie.u << '\n';
         std::cout << "Barycentric v: " << n_ie.v << '\n';
         std::cout << "Texel s: " << n_ie.texel_s << '\n';
         std::cout << "Texel t: " << n_ie.texel_t << '\n';
         std::cout << "Object material summary:\n";
-        std::cout << "  Shininess: " << material.shininess << '\n';
-        std::cout << "  Reflectivity: " << material.reflectivity << '\n';
-        std::cout << "  Ambient intensity: " << material.ambient_intensity << '\n';
-        std::cout << "  Diffuse intensity: " << material.diffuse_intensity << '\n';
-        std::cout << "  Specular intensity: " << material.specular_intensity << '\n';
+        std::cout << "  Shininess: " << n_ie.material.shininess << '\n';
+        std::cout << "  Reflectivity: " << n_ie.material.reflectivity << '\n';
+        std::cout << "  Ambient intensity: " << n_ie.material.ambient_intensity << '\n';
+        std::cout << "  Diffuse intensity: " << n_ie.material.diffuse_intensity << '\n';
+        std::cout << "  Specular intensity: " << n_ie.material.specular_intensity << '\n';
       }
 
       for (int l = 0; l < lights.size(); l += 1) {
@@ -108,8 +92,8 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit, bool print) {
         }
 
         bool blocked = false;
-        for (int s = 0; s < objects.size(); s += 1) {
-          IntersectionEvent b_ie = objects[s]->intersect(
+        for (int m = 0; m < models.size(); m += 1) {
+          IntersectionEvent b_ie = models[m].intersect(
             n_ie.intersection + l_vector * 0.01,
             l_vector
           );
@@ -118,14 +102,14 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit, bool print) {
 
         Color this_ac =
           lights[l].ambient *
-          material.ambient_texture->texel(n_ie.texel_s, n_ie.texel_t);
+          n_ie.material.ambient_texture->texel(n_ie.texel_s, n_ie.texel_t);
         ambient_comp.r += this_ac.r;
         ambient_comp.g += this_ac.g;
         ambient_comp.b += this_ac.b;
 
         if (print) {
           std::cout << "  Light ambient color: " << lights[l].ambient.to_s() << '\n';
-          std::cout << "  Material ambient color: " << material.ambient_texture->texel(n_ie.texel_s, n_ie.texel_t).to_s() << '\n';
+          std::cout << "  Material ambient color: " << n_ie.material.ambient_texture->texel(n_ie.texel_s, n_ie.texel_t).to_s() << '\n';
           std::cout << "  Ambient component: " << this_ac.to_s() << '\n';
         }
 
@@ -139,7 +123,7 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit, bool print) {
 
           Color this_dc =
             lights[l].diffuse *
-            material.diffuse_texture->texel(n_ie.texel_s, n_ie.texel_t) *
+            n_ie.material.diffuse_texture->texel(n_ie.texel_s, n_ie.texel_t) *
             std::max(0.0, l_vector.dot(n_ie.normal));
           diffuse_comp.r += this_dc.r;
           diffuse_comp.g += this_dc.g;
@@ -147,17 +131,17 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit, bool print) {
 
           if (print) {
             std::cout << "  Light diffuse color: " << lights[l].diffuse.to_s() << '\n';
-            std::cout << "  Material diffuse color: " << material.diffuse_texture->texel(n_ie.texel_s, n_ie.texel_t).to_s() << '\n';
+            std::cout << "  Material diffuse color: " << n_ie.material.diffuse_texture->texel(n_ie.texel_s, n_ie.texel_t).to_s() << '\n';
             std::cout << "  Diffuse dot product multiplier: " << std::max(0.0, l_vector.dot(n_ie.normal)) << '\n';
             std::cout << "  Diffuse component: " << this_dc.to_s() << '\n';
           }
 
           Color this_sc =
             lights[l].specular *
-            material.specular *
+            n_ie.material.specular *
             std::pow(
               std::max(0.0, r_vector.dot(direction * -1)),
-              material.shininess
+              n_ie.material.shininess
             );
           specular_comp.r += this_sc.r;
           specular_comp.g += this_sc.g;
@@ -165,8 +149,8 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit, bool print) {
 
           if (print) {
             std::cout << "  Light specular color: " << lights[l].specular.to_s() << '\n';
-            std::cout << "  Material specular color: " << material.specular.to_s() << '\n';
-            std::cout << "  Specular dot product multiplier: " << std::pow(std::max(0.0, r_vector.dot(direction * -1)), material.shininess) << '\n';
+            std::cout << "  Material specular color: " << n_ie.material.specular.to_s() << '\n';
+            std::cout << "  Specular dot product multiplier: " << std::pow(std::max(0.0, r_vector.dot(direction * -1)), n_ie.material.shininess) << '\n';
             std::cout << "  Specular component: " << this_sc.to_s() << '\n';
           }
         } else {
@@ -180,7 +164,7 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit, bool print) {
       diffuse_comp = diffuse_comp * (1.0 / lights.size());
       specular_comp = specular_comp * (1.0 / lights.size());
 
-      if (material.reflectivity > 0) {
+      if (n_ie.material.reflectivity > 0) {
         Vector ref_dir = (n_ie.normal * n_ie.normal.dot(direction * -1) * 2) + direction;
         reflective_comp = cast_ray(
           n_ie.intersection + ref_dir * 0.1,
@@ -194,13 +178,13 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit, bool print) {
         ambient_comp.blend(
           diffuse_comp.blend(
             specular_comp,
-            material.diffuse_intensity,
-            material.specular_intensity
+            n_ie.material.diffuse_intensity,
+            n_ie.material.specular_intensity
           ),
-          material.ambient_intensity,
+          n_ie.material.ambient_intensity,
           1
         ),
-        material.reflectivity
+        n_ie.material.reflectivity
       );
 
       if (print) {
@@ -214,37 +198,8 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit, bool print) {
   }
 }
 
-void Scene::add_sphere(double x, double y, double z, double r, Material* i_material) {
-  objects.push_back(new Sphere(
-    objects.size(), 
-    Point(x, y, z), 
-    r, 
-    i_material
-  ));
-}
-
-void Scene::add_plane(Point i_loc, Vector i_normal, Material* i_material) {
-  objects.push_back(new Plane(
-    objects.size(),
-    i_loc,
-    i_normal,
-    i_material
-  ));
-}
-
-void Scene::add_triangle(
-  Point i_a, double i_a_texel_s, double i_a_texel_t,
-  Point i_b, double i_b_texel_s, double i_b_texel_t,
-  Point i_c, double i_c_texel_s, double i_c_texel_t,
-  Material* i_material
-) {
-  objects.push_back(new Triangle(
-    objects.size(),
-    i_a, i_a_texel_s, i_a_texel_t,
-    i_b, i_b_texel_s, i_b_texel_t,
-    i_c, i_c_texel_s, i_c_texel_t,
-    i_material
-  ));
+void Scene::add_model(Model m) {
+  models.push_back(m);
 }
 
 void Scene::add_light(double x, double y, double z, Color i_ambient, Color i_diffuse, Color i_specular) {

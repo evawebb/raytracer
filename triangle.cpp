@@ -47,7 +47,8 @@ IntersectionEvent Triangle::intersect(Point origin, Vector direction) {
         u,
         v,
         texel_s,
-        texel_t
+        texel_t,
+        *material
       );
     } else {
       return IntersectionEvent(origin, direction);
