@@ -7,7 +7,8 @@
 - [x] Triangles
 - [x] Textures
 - [x] Unified object class
-- [ ] Model object
+- [x] Model object
+- [ ] Model transformations
 - [ ] Camera transformations
 - [ ] Reading in .obj files
 - [ ] Why does reversing a plane's normal change its shading? (See scene #7.)
