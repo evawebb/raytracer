@@ -13,7 +13,11 @@ IntersectionEvent Plane::intersect(Point origin, Vector direction) {
       intersection,
       t,
       normal,
-      id
+      id,
+      0,
+      0,
+      0,
+      0
     );
   } else {
     return IntersectionEvent(
@@ -23,6 +27,10 @@ IntersectionEvent Plane::intersect(Point origin, Vector direction) {
       Point(0, 0, 0),
       -1,
       Vector(0, 0, 0),
+      -1,
+      -1,
+      -1,
+      -1,
       -1
     );
   }

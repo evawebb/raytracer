@@ -2,6 +2,7 @@
 #define TEXTURE_H
 
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <iostream>
 #include "color.h"
@@ -16,7 +17,6 @@ class Texture {
 
     Color texel(double u, double v);
 
-  public:
     Color** data;
     int width, height;
 

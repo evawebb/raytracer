@@ -7,7 +7,7 @@
 #include "color_material.h"
 #include "texture.h"
 
-#define SCENE 0
+#define SCENE 9
 #define S_L 1000
 
 double rand_double() {
@@ -147,17 +147,17 @@ int main(int argc, char** argv) {
             rad * sin(left) * sin(top), 
             rad * cos(left) + y_offset, 
             rad * sin(left) * cos(top) + z_offset
-          ),
+          ), 0, 0,
           Point(
             rad * sin(left) * sin(bottom), 
             rad * cos(left) + y_offset, 
             rad * sin(left) * cos(bottom) + z_offset
-          ),
+          ), 0, 0,
           Point(
             rad * sin(right) * sin(top), 
             rad * cos(right) + y_offset, 
             rad * sin(right) * cos(top) + z_offset
-          ),
+          ), 0, 0,
           blue
         );
         sc.add_triangle(
@@ -165,69 +165,60 @@ int main(int argc, char** argv) {
             rad * sin(left) * sin(bottom), 
             rad * cos(left) + y_offset, 
             rad * sin(left) * cos(bottom) + z_offset
-          ),
+          ), 0, 0,
           Point(
             rad * sin(right) * sin(top), 
             rad * cos(right) + y_offset, 
             rad * sin(right) * cos(top) + z_offset
-          ),
+          ), 0, 0,
           Point(
             rad * sin(right) * sin(bottom), 
             rad * cos(right) + y_offset, 
             rad * sin(right) * cos(bottom) + z_offset
-          ),
+          ), 0, 0,
           blue
         );
       }
     }
     sc.add_triangle(
-      Point(rand_double(), -rand_double(), 2),
-      Point(rand_double(), -rand_double(), 2),
-      Point(rand_double(), -rand_double(), 2),
+      Point(rand_double(), -rand_double(), 2), 0, 0,
+      Point(rand_double(), -rand_double(), 2), 0, 0,
+      Point(rand_double(), -rand_double(), 2), 0, 0,
       green
     );
     sc.add_light(0, -1, 0, white, white, white);
   } else if (SCENE == 9) {
-    // Texture test("test.ppm");
-    // ColorTexture test(Color(1, 1, 0));
-    // Material txed(
-    //   &test,
-    //   &test,
-    //   white,
-    //   3,
-    //   0,
-    //   ai, di, si
-    // );
-    ColorMaterial* txed = new ColorMaterial(
-      Color(1, 1, 0),
-      Color(1, 1, 0),
+    Texture* tex = new Texture("tex.ppm");
+    Material* txed = new Material(
+      tex,
+      tex,
       white,
       3,
       0,
-      0.5, 0.5, 0.5
+      0.5, 0.5, 0
     );
     sc.add_triangle(
-      Point(-1, -1,    2),
-      Point(-1,  0,  2.5),
-      Point( 1, -1,    2),
+      Point(-1, -1,    2), 0, 0,
+      Point(-1,  0,  2.5), 0, 1,
+      Point( 1, -1,    2), 1, 0,
       txed
     );
     sc.add_triangle(
-      Point( 1, -1,    2),
-      Point(-1,  0,  2.5),
-      Point( 1,  0,  2.5),
+      Point( 1, -1,    2), 1, 0,
+      Point(-1,  0,  2.5), 0, 1,
+      Point( 1,  0,  2.5), 1, 1,
       txed
     );
     sc.add_triangle(
-      Point(-1,  0,  2.5),
-      Point(-1,  1,    2),
-      Point( 1,  0,  2.5),
+      Point(-1,  0,  2.5), 0, 0,
+      Point(-1,  1,    2), 0, 1,
+      Point( 1,  0,  2.5), 1, 0,
       txed
     );
     sc.add_triangle(
-      Point( 1,  0,  2.5),
-      Point(-1,  1,    2),
-      Point( 1,  1,    2),
+      Point( 1,  0,  2.5), 1, 0,
+      Point(-1,  1,    2), 0, 1,
+      Point( 1,  1,    2), 1, 1,
       txed
     );
     sc.add_light(0, -0.5, 0, white, white, white);
@@ -238,7 +229,7 @@ int main(int argc, char** argv) {
   Color most_intense(0, 0, 0);
   for (int y = 0; y < s_l; y += 1) {
     for (int x = 0; x < s_l; x += 1) {
-      Color c = sc.color_at(x, y, 5, 2);
+      Color c = sc.color_at(x, y, 5, 1);
       iw.set(x, y, c);
 
       if (c.r + c.g + c.b > most_intense.r + most_intense.g + most_intense.b) {

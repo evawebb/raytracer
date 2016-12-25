@@ -53,7 +53,11 @@ IntersectionEvent Sphere::intersect(Point origin, Vector direction) {
           intersection,
           t,
           normal,
-          id
+          id,
+          0,
+          0,
+          0,
+          0
         );
       } else {
         return IntersectionEvent(
@@ -63,7 +67,11 @@ IntersectionEvent Sphere::intersect(Point origin, Vector direction) {
           Point(0, 0, 0),
           t,
           Vector(0, 0, 0),
-          id
+          id,
+          0,
+          0,
+          0,
+          0
         );
       }
     } else {
@@ -74,6 +82,10 @@ IntersectionEvent Sphere::intersect(Point origin, Vector direction) {
         Point(0, 0, 0),
         -1,
         Vector(0, 0, 0),
+        -1,
+        -1,
+        -1,
+        -1,
         -1
       );
     }
@@ -85,6 +97,10 @@ IntersectionEvent Sphere::intersect(Point origin, Vector direction) {
       Point(0, 0, 0),
       -2,
       Vector(0, 0, 0),
+      -1,
+      -1,
+      -1,
+      -1,
       -1
     );
   }

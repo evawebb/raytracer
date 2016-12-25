@@ -30,7 +30,7 @@ Color Scene::color_at(int x, int y, double focal_length, int aa) {
       Vector direction = (origin - Point(0, 0, -focal_length)).normalized();
 
       Color c = cast_ray(origin, direction, 10,
-        150 <= x && x <= 152 && y == 250);
+        500 <= x && x <= 502 && y == 400);
       total_r += c.r;
       total_g += c.g;
       total_b += c.b;
@@ -57,6 +57,10 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit, bool print) {
       Point(0, 0, 0),
       1000000,
       Vector(0, 0, 0),
+      -1,
+      -1,
+      -1,
+      -1,
       -1
     );
     Material material;
@@ -82,6 +86,10 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit, bool print) {
 
       if (print) {
         std::cout << "The intersection was at " << n_ie.intersection.to_s() << " on object " << n_ie.object_id << ".\n";
+        std::cout << "Barycentric u: " << n_ie.u << '\n';
+        std::cout << "Barycentric v: " << n_ie.v << '\n';
+        std::cout << "Texel s: " << n_ie.texel_s << '\n';
+        std::cout << "Texel t: " << n_ie.texel_t << '\n';
         std::cout << "Object material summary:\n";
         std::cout << "  Shininess: " << material.shininess << '\n';
         std::cout << "  Reflectivity: " << material.reflectivity << '\n';
@@ -110,14 +118,14 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit, bool print) {
 
         Color this_ac =
           lights[l].ambient *
-          material.ambient_texture->texel(0, 0);
+          material.ambient_texture->texel(n_ie.texel_s, n_ie.texel_t);
         ambient_comp.r += this_ac.r;
         ambient_comp.g += this_ac.g;
         ambient_comp.b += this_ac.b;
 
         if (print) {
           std::cout << "  Light ambient color: " << lights[l].ambient.to_s() << '\n';
-          std::cout << "  Material ambient color: " << material.ambient_texture->texel(0, 0).to_s() << '\n';
+          std::cout << "  Material ambient color: " << material.ambient_texture->texel(n_ie.texel_s, n_ie.texel_t).to_s() << '\n';
           std::cout << "  Ambient component: " << this_ac.to_s() << '\n';
         }
 
@@ -131,7 +139,7 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit, bool print) {
 
           Color this_dc =
             lights[l].diffuse *
-            material.diffuse_texture->texel(0, 0) *
+            material.diffuse_texture->texel(n_ie.texel_s, n_ie.texel_t) *
             std::max(0.0, l_vector.dot(n_ie.normal));
           diffuse_comp.r += this_dc.r;
           diffuse_comp.g += this_dc.g;
@@ -139,7 +147,7 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit, bool print) {
 
           if (print) {
             std::cout << "  Light diffuse color: " << lights[l].diffuse.to_s() << '\n';
-            std::cout << "  Material diffuse color: " << material.diffuse_texture->texel(0, 0).to_s() << '\n';
+            std::cout << "  Material diffuse color: " << material.diffuse_texture->texel(n_ie.texel_s, n_ie.texel_t).to_s() << '\n';
             std::cout << "  Diffuse dot product multiplier: " << std::max(0.0, l_vector.dot(n_ie.normal)) << '\n';
             std::cout << "  Diffuse component: " << this_dc.to_s() << '\n';
           }
@@ -224,12 +232,17 @@ void Scene::add_plane(Point i_loc, Vector i_normal, Material* i_material) {
   ));
 }
 
-void Scene::add_triangle(Point i_a, Point i_b, Point i_c, Material* i_material) {
+void Scene::add_triangle(
+  Point i_a, double i_a_texel_s, double i_a_texel_t,
+  Point i_b, double i_b_texel_s, double i_b_texel_t,
+  Point i_c, double i_c_texel_s, double i_c_texel_t,
+  Material* i_material
+) {
   objects.push_back(new Triangle(
     objects.size(),
-    i_a,
-    i_b,
-    i_c,
+    i_a, i_a_texel_s, i_a_texel_t,
+    i_b, i_b_texel_s, i_b_texel_t,
+    i_c, i_c_texel_s, i_c_texel_t,
     i_material
   ));
 }

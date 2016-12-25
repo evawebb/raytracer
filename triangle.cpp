@@ -18,18 +18,32 @@ IntersectionEvent Triangle::intersect(Point origin, Vector direction) {
     // These are the barycentric coordinates of the intersection point
     // within the triangle. u is the influence along the a_to_b vector,
     // and v is the influence along the a_to_c vector.
-    double dot_c_c = a_to_c.dot(a_to_c);
-    double dot_c_b = a_to_c.dot(a_to_b);
-    double dot_c_i = a_to_c.dot(a_to_i);
+    // double dot_c_c = a_to_c.dot(a_to_c);
+    // double dot_c_b = a_to_c.dot(a_to_b);
+    // double dot_c_i = a_to_c.dot(a_to_i);
+    // double dot_b_b = a_to_b.dot(a_to_b);
+    // double dot_b_i = a_to_b.dot(a_to_i);
+    // double denom = 1.0 / (dot_c_c * dot_b_b - dot_c_b * dot_c_b);
+    // double u = (dot_b_b * dot_c_i - dot_c_b * dot_b_i) * denom;
+    // double v = (dot_c_c * dot_b_i - dot_c_b * dot_c_i) * denom;
     double dot_b_b = a_to_b.dot(a_to_b);
-    double dot_b_i = a_to_b.dot(a_to_i);
-    double denom = 1.0 / (dot_c_c * dot_b_b - dot_c_b * dot_c_b);
-    double u = (dot_b_b * dot_c_i - dot_c_b * dot_b_i) * denom;
-    double v = (dot_c_c * dot_b_i - dot_c_b * dot_c_i) * denom;
+    double dot_b_c = a_to_b.dot(a_to_c);
+    double dot_c_c = a_to_c.dot(a_to_c);
+    double dot_i_b = a_to_i.dot(a_to_b);
+    double dot_i_c = a_to_i.dot(a_to_c);
+    double denom = 1.0 / (dot_b_b * dot_c_c - dot_b_c * dot_b_c);
+    double u = (dot_c_c * dot_i_b - dot_b_c * dot_i_c) * denom;
+    double v = (dot_b_b * dot_i_c - dot_b_c * dot_i_b) * denom;
 
     // If the point is inside the triangle, then neither u nor v will
     // be negative and their sum should be less than 1.
     if (u >= 0 && v >= 0 && (u + v) <= 1) {
+      // Using the texel coordinates of the triangle's vertices, calculate
+      // the texel coordinates of this point.
+      double r = 1 - u - v;
+      double texel_s = r * a_texel_s + u * b_texel_s + v * c_texel_s;
+      double texel_t = r * a_texel_t + u * b_texel_t + v * c_texel_t;
+
       return IntersectionEvent(
         origin,
         direction,
@@ -37,7 +51,11 @@ IntersectionEvent Triangle::intersect(Point origin, Vector direction) {
         intersection,
         t,
         normal,
-        id
+        id,
+        u,
+        v,
+        texel_s,
+        texel_t
       );
     } else {
       return IntersectionEvent(
@@ -47,7 +65,11 @@ IntersectionEvent Triangle::intersect(Point origin, Vector direction) {
         Point(0, 0, 0),
         t,
         Vector(0, 0, 0),
-        -1
+        -1,
+        u,
+        v,
+        u,
+        v
       );
     }
   } else {
@@ -58,6 +80,10 @@ IntersectionEvent Triangle::intersect(Point origin, Vector direction) {
       Point(0, 0, 0),
       -1,
       Vector(0, 0, 0),
+      -1,
+      -1,
+      -1,
+      -1,
       -1
     );
   }

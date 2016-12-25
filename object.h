@@ -2,6 +2,7 @@
 #define OBJECT_H
 
 #include <iostream>
+#include <string>
 #include "point.h"
 #include "vector.h"
 #include "intersection_event.h"
@@ -25,6 +26,7 @@ class Object {
     Material* material;
 
     virtual IntersectionEvent intersect(Point origin, Vector direction) = 0;
+    virtual std::string to_s() { return "noop"; }
 };
 
 #endif
