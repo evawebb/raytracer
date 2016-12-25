@@ -6,9 +6,10 @@
 - [x] Planes
 - [x] Triangles
 - [x] Textures
-- [x] Unified model object
-- [ ] Reading in .obj files
+- [x] Unified object class
+- [ ] Model object
 - [ ] Camera transformations
+- [ ] Reading in .obj files
 - [ ] Why does reversing a plane's normal change its shading? (See scene #7.)
 - [ ] Transparency
 - [ ] Refraction
