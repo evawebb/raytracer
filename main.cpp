@@ -207,17 +207,17 @@ int main(int argc, char** argv) {
             rad * sin(left) * sin(top), 
             rad * cos(left) + y_offset, 
             rad * sin(left) * cos(top) + z_offset
-          ), 0, 0,
+          ),
           Point(
             rad * sin(left) * sin(bottom), 
             rad * cos(left) + y_offset, 
             rad * sin(left) * cos(bottom) + z_offset
-          ), 0, 0,
+          ),
           Point(
             rad * sin(right) * sin(top), 
             rad * cos(right) + y_offset, 
             rad * sin(right) * cos(top) + z_offset
-          ), 0, 0,
+          ),
           blue
         );
         hemisphere.add_triangle(
@@ -225,17 +225,17 @@ int main(int argc, char** argv) {
             rad * sin(left) * sin(bottom), 
             rad * cos(left) + y_offset, 
             rad * sin(left) * cos(bottom) + z_offset
-          ), 0, 0,
+          ),
           Point(
             rad * sin(right) * sin(top), 
             rad * cos(right) + y_offset, 
             rad * sin(right) * cos(top) + z_offset
-          ), 0, 0,
+          ),
           Point(
             rad * sin(right) * sin(bottom), 
             rad * cos(right) + y_offset, 
             rad * sin(right) * cos(bottom) + z_offset
-          ), 0, 0,
+          ),
           blue
         );
       }
@@ -243,9 +243,9 @@ int main(int argc, char** argv) {
 
     Model triangle(2);
     triangle.add_triangle(
-      Point(rand_double(), -rand_double(), 2), 0, 0,
-      Point(rand_double(), -rand_double(), 2), 0, 0,
-      Point(rand_double(), -rand_double(), 2), 0, 0,
+      Point(rand_double(), -rand_double(), 2),
+      Point(rand_double(), -rand_double(), 2),
+      Point(rand_double(), -rand_double(), 2),
       green
     );
 
@@ -380,16 +380,18 @@ int main(int argc, char** argv) {
     sc.add_light(0, -0.2, 0, white, white, white);
     sc.add_light(0, -0.8, 1.1, white, white, white);
   } else if (scene == 11) {
-    Texture* elsa = new Texture("elsa.ppm");
+    Texture* koboli = new Texture("koboli.ppm");
     Material* txed = new Material(
-      elsa,
-      elsa,
+      koboli,
+      koboli,
       white,
       3,
       0,
       ai, di, si
     );
     Model model(0);
+    model.scale(2, 1, 1);
+    model.translate(Vector(0.3, -0.2, 3));
     model.add_triangle(
       Point(-1, -1,   2), 0, 0,
       Point(-1,  1,   1), 0, 1,
@@ -405,6 +407,105 @@ int main(int argc, char** argv) {
 
     sc.add_model(model);
     sc.add_light(0, -0.5, 0, white, white, white);
+  } else if (scene == 12) {
+    Texture* sakura = new Texture("sakura.ppm");
+    Material* m = new Material(
+      sakura,
+      sakura,
+      white,
+      3, 0,
+      ai, di, si
+    ); 
+
+    Model box(0);
+    box.scale(3, 3, 3);
+    box.rotate(0.5, Vector(1, -1, 1));
+    box.add_triangle(
+      Point(-1, -1,  1), 0, 0,
+      Point( 1, -1,  1), 1, 0,
+      Point(-1,  1,  1), 0, 1,
+      m
+    );
+    box.add_triangle(
+      Point( 1, -1,  1), 1, 0,
+      Point( 1,  1,  1), 1, 1,
+      Point(-1,  1,  1), 0, 1,
+      m
+    );
+
+    box.add_triangle(
+      Point( 1, -1,  1), 0, 0,
+      Point( 1, -1, -1), 1, 0,
+      Point( 1,  1,  1), 0, 1,
+      m
+    );
+    box.add_triangle(
+      Point( 1, -1, -1), 1, 0,
+      Point( 1,  1, -1), 1, 1,
+      Point( 1,  1,  1), 0, 1,
+      m
+    );
+
+    box.add_triangle(
+      Point( 1, -1, -1), 0, 0,
+      Point(-1, -1, -1), 1, 0,
+      Point( 1,  1, -1), 0, 1,
+      m
+    );
+    box.add_triangle(
+      Point(-1, -1, -1), 1, 0,
+      Point(-1,  1, -1), 1, 1,
+      Point( 1,  1, -1), 0, 1,
+      m
+    );
+
+    box.add_triangle(
+      Point(-1, -1, -1), 0, 0,
+      Point(-1, -1,  1), 1, 0,
+      Point(-1,  1, -1), 0, 1,
+      m
+    );
+    box.add_triangle(
+      Point(-1, -1,  1), 1, 0,
+      Point(-1,  1,  1), 1, 1,
+      Point(-1,  1, -1), 0, 1,
+      m
+    );
+
+    box.add_triangle(
+      Point(-1, -1, -1), 0, 0,
+      Point( 1, -1, -1), 1, 0,
+      Point(-1, -1,  1), 0, 1,
+      m
+    );
+    box.add_triangle(
+      Point( 1, -1, -1), 1, 0,
+      Point( 1, -1,  1), 1, 1,
+      Point(-1, -1,  1), 0, 1,
+      m
+    );
+
+    box.add_triangle(
+      Point(-1,  1,  1), 0, 0,
+      Point( 1,  1,  1), 1, 0,
+      Point(-1,  1, -1), 0, 1,
+      m
+    );
+    box.add_triangle(
+      Point( 1,  1,  1), 1, 0,
+      Point( 1,  1, -1), 1, 1, 
+      Point(-1,  1, -1), 0, 1,
+      m
+    );
+
+    Model sphere(1);
+    sphere.add_sphere(Point(0, 0.2, 1.1), 0.4, mirror);
+
+    sc.add_model(box);
+    sc.add_model(sphere);
+
+    sc.add_light(0, -0.2, 0, white, white, white);
+    sc.add_light(0, -0.8, 1.1, white, white, white);
   }
 
   std::cout << '\n';

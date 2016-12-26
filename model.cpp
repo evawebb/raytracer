@@ -15,13 +15,7 @@ IntersectionEvent Model::intersect(Point origin, Vector direction) {
 }
 
 void Model::add_triangle(Point i_a, Point i_b, Point i_c) {
-  objects.push_back(new Triangle(
-    objects.size(),
-    i_a, 0, 0,
-    i_b, 0, 0,
-    i_c, 0, 0,
-    NULL
-  ));
+  add_triangle(i_a, 0, 0, i_b, 0, 0, i_c, 0, 0, NULL);
 }
 
 void Model::add_triangle(
@@ -29,13 +23,21 @@ void Model::add_triangle(
   Point i_b, double i_b_texel_s, double i_b_texel_t,
   Point i_c, double i_c_texel_s, double i_c_texel_t
 ) {
-  objects.push_back(new Triangle(
-    objects.size(),
+  add_triangle(
     i_a, i_a_texel_s, i_a_texel_t,
     i_b, i_b_texel_s, i_b_texel_t,
     i_c, i_c_texel_s, i_c_texel_t,
     NULL
-  ));
+  );
+}
+
+void Model::add_triangle(Point i_a, Point i_b, Point i_c, Material* i_material) {
+  add_triangle(
+    i_a, 0, 0,
+    i_b, 0, 0,
+    i_c, 0, 0,
+    i_material
+  );
 }
 
 void Model::add_triangle(
@@ -46,9 +48,9 @@ void Model::add_triangle(
 ) {
   objects.push_back(new Triangle(
     objects.size(),
-    i_a, i_a_texel_s, i_a_texel_t,
-    i_b, i_b_texel_s, i_b_texel_t,
-    i_c, i_c_texel_s, i_c_texel_t,
+    inv_transform * i_a, i_a_texel_s, i_a_texel_t,
+    inv_transform * i_b, i_b_texel_s, i_b_texel_t,
+    inv_transform * i_c, i_c_texel_s, i_c_texel_t,
     i_material
   ));
 }
@@ -86,5 +88,46 @@ void Model::add_plane(Point i_loc, Vector i_normal, Material* i_material) {
     i_loc,
     i_normal,
     i_material
+  ));
+}
+
+void Model::add_transformation(Matrix next_matrix) {
+  inv_transform = next_matrix * inv_transform;
+}
+
+void Model::translate(Vector trans) {
+  add_transformation(Matrix(
+    1, 0, 0, trans.x,
+    0, 1, 0, trans.y,
+    0, 0, 1, trans.z,
+    0, 0, 0,       1
+  ));
+}
+
+void Model::scale(double x_mult, double y_mult, double z_mult) {
+  add_transformation(Matrix(
+    x_mult,      0,      0, 0,
+         0, y_mult,      0, 0,
+         0,      0, z_mult, 0,
+         0,      0,      0, 1
+  ));
+}
+
+void Model::rotate(double radians, Vector axis) {
+  axis = axis.normalized();
+  double c = cos(radians);
+  double s = sin(radians);
+  double xx = axis.x * axis.x * (1 - c);
+  double xy = axis.x * axis.y * (1 - c);
+  double xz = axis.x * axis.z * (1 - c);
+  double yy = axis.y * axis.y * (1 - c);
+  double yz = axis.y * axis.z * (1 - c);
+  double zz = axis.z * axis.z * (1 - c);
+
+  add_transformation(Matrix(
+             xx + c, xy - axis.z * s, xz + axis.y * s, 0,
+    xy + axis.z * s,          yy + c, yz - axis.x * s, 0,
+    xz - axis.y * s, yz + axis.x * s,          zz + c, 0,
+                  0,               0,               0, 1
   ));
 }

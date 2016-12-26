@@ -12,7 +12,7 @@ class Matrix {
         m[i] = new double[4];
 
         for (int j = 0; j < 4; j += 1) {
-          m[i][j] = 0;
+          m[i][j] = i == j ? 1 : 0;
         }
       }
     }

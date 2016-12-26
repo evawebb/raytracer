@@ -30,6 +30,7 @@ class Model {
       Point i_b, double i_b_texel_s, double i_b_texel_t,
       Point i_c, double i_c_texel_s, double i_c_texel_t
     );
+    void add_triangle(Point i_a, Point i_b, Point i_c, Material* i_material);
     void add_triangle(
       Point i_a, double i_a_texel_s, double i_a_texel_t,
       Point i_b, double i_b_texel_s, double i_b_texel_t,
@@ -41,9 +42,14 @@ class Model {
     void add_plane(Point i_loc, Vector i_normal);
     void add_plane(Point i_loc, Vector i_normal, Material* i_material);
 
+    void add_transformation(Matrix next_matrix);
+    void translate(Vector trans);
+    void scale(double x_mult, double y_mult, double z_mult);
+    void rotate(double radians, Vector axis);
 
   private:
     std::vector<Object*> objects;
+    Matrix inv_transform;
 };
 
 #endif
