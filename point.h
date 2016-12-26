@@ -8,11 +8,14 @@
 class Point {
   public:
     Point() {}
+    Point(double ix, double iy) {
+      x = ix; y = iy; z = 0; w = 1;
+    }
     Point(double ix, double iy, double iz) {
-      x = ix; y = iy; z = iz;
+      x = ix; y = iy; z = iz; w = 1;
     }
 
-    double x, y, z;
+    double x, y, z, w;
 
     Point operator+(Point o) {
       return Point(x + o.x, y + o.y, z + o.z);

@@ -10,11 +10,14 @@
 class Vector {
   public:
     Vector() {}
+    Vector(double ix, double iy) {
+      x = ix; y = iy; z = 0; w = 0;
+    }
     Vector(double ix, double iy, double iz) {
-      x = ix; y = iy; z = iz;
+      x = ix; y = iy; z = iz; w = 0;
     }
 
-    double x, y, z;
+    double x, y, z, w;
 
     Vector operator+(Vector o) {
       return Vector(x + o.x, y + o.y, z + o.z);

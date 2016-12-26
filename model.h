@@ -8,6 +8,7 @@
 #include "triangle.h"
 #include "point.h"
 #include "vector.h"
+#include "matrix.h"
 #include "intersection_event.h"
 
 class Model {

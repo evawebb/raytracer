@@ -6,9 +6,10 @@
 #include "color.h"
 #include "color_material.h"
 #include "texture.h"
+#include "matrix.h"
 
 #define S_L 1000
-#define ANTIALIASING 2
+#define ANTIALIASING 1
 
 double rand_double() {
   int precision = 10000;
@@ -390,15 +391,15 @@ int main(int argc, char** argv) {
     );
     Model model(0);
     model.add_triangle(
-      Point(-1, -1,    2), 0, 0,
-      Point(-1,  1,    1), 0, 1,
-      Point( 1, -1,  1.5), 1, 0,
+      Point(-1, -1,   2), 0, 0,
+      Point(-1,  1,   1), 0, 1,
+      Point( 1, -1, 1.5), 1, 0,
       txed
     );
     model.add_triangle(
-      Point( 1, -1,  1.5), 1, 0,
-      Point(-1,  1,    1), 0, 1,
-      Point( 1,  1,  0.5), 1, 1,
+      Point( 1, -1, 1.5), 1, 0,
+      Point(-1,  1,   1), 0, 1,
+      Point( 1,  1, 0.5), 1, 1,
       txed
     );
 
