@@ -688,12 +688,13 @@ int main(int argc, char** argv) {
     sc.add_light(-0.5, -0.9, 0, white, white, white);
   } else if (scene == 15) {
     Model cube(0);
-    cube.rotate(1, Vector(0.5, -1, 0.5));
-    cube.translate(Vector(0, 0, 2));
-    cube.load_obj_file("models/cube.obj");
+    cube.rotate(0.5, Vector(0, 1, 0));
+    cube.rotate(1.4, Vector(1, 0, 0));
+    cube.translate(Vector(0, 0, 5));
+    cube.load_obj_file("models/cube.obj", blue);
 
     Model bg(1);
-    bg.add_plane(Point(0, 0, 5), Vector(0, 0, -1), green);
+    bg.add_plane(Point(0, 0, 10), Vector(0, 0, -1), green);
 
     sc.add_model(cube);
     sc.add_model(bg);

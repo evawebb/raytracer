@@ -32,6 +32,16 @@ class Matrix {
       m[2][0] = ca; m[2][1] = cb; m[2][2] = cc; m[2][3] = cd;
       m[3][0] = da; m[3][1] = db; m[3][2] = dc; m[3][3] = dd;
     }
+    Matrix(const Matrix &other) {
+      m = new double*[4];
+      for (int i = 0; i < 4; i += 1) {
+        m[i] = new double[4];
+
+        for (int j = 0; j < 4; j += 1) {
+          m[i][j] = other.m[i][j];
+        }
+      }
+    }
 
     Matrix operator*(Matrix o) {
       Matrix result;

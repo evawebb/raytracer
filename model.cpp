@@ -100,11 +100,17 @@ void Model::add_triangle(
   Point i_c, Vector i_c_normal, Point i_c_texel,
   Material* i_material
 ) {
+  Matrix normal_transform(transform);
+  normal_transform.m[0][3] = 0;
+  normal_transform.m[1][3] = 0;
+  normal_transform.m[2][3] = 0;
+  normal_transform.m[3][3] = 1;
+
   objects.push_back(new Triangle(
     objects.size(),
-    transform * i_a, i_a_normal, i_a_texel,
-    transform * i_b, i_b_normal, i_b_texel,
-    transform * i_c, i_c_normal, i_c_texel,
+    transform * i_a, (normal_transform * i_a_normal).normalized(), i_a_texel,
+    transform * i_b, (normal_transform * i_b_normal).normalized(), i_b_texel,
+    transform * i_c, (normal_transform * i_c_normal).normalized(), i_c_texel,
     i_material
   ));
 }

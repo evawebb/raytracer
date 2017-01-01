@@ -60,9 +60,9 @@ class Triangle : public Object {
     IntersectionEvent intersect(Point origin, Vector direction);
     std::string to_s() {
       std::stringstream ss;
-      ss << "A: " << a.to_s() << a_texel.to_s();
-      ss << ", B: " << b.to_s() << b_texel.to_s();
-      ss << ", C: " << c.to_s() << c_texel.to_s();
+      ss << "A: " <<   a.to_s() << a_normal.to_s() << a_texel.to_s();
+      ss << ", B: " << b.to_s() << b_normal.to_s() << b_texel.to_s();
+      ss << ", C: " << c.to_s() << c_normal.to_s() << c_texel.to_s();
       return ss.str();
     }
 };

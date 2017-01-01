@@ -28,7 +28,7 @@ class Model {
 
     IntersectionEvent intersect(Point origin, Vector direction);
 
-    void load_obj_file(std::string fn);
+    void load_obj_file(std::string fn, Material* mat);
 
     void add_triangle(Point i_a, Point i_b, Point i_c);
     void add_triangle(
@@ -73,6 +73,8 @@ class Model {
   private:
     std::vector<Object*> objects;
     Matrix transform;
+
+    std::vector<std::string> split(std::string raw, char delim, bool cluster);
 };
 
 #endif
