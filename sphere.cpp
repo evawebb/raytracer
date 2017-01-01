@@ -58,7 +58,7 @@ IntersectionEvent Sphere::intersect(Point origin, Vector direction) {
           0,
           0,
           0,
-          *material
+          material
         );
       } else {
         return IntersectionEvent(origin, direction);

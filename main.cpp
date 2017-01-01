@@ -8,7 +8,7 @@
 #include "texture.h"
 #include "matrix.h"
 
-#define S_L 1000
+#define S_L 1080
 #define ANTIALIASING 1
 
 double rand_double() {
@@ -23,12 +23,14 @@ int main(int argc, char** argv) {
   }
 
   srand(time(NULL));
-  int s_l = S_L;
+  int img_height = S_L;
+  // int img_width = 16 * S_L / 9;
+  int img_width = S_L;
   std::stringstream ss;
   ss << "scene_" << time(NULL) << '_' << scene << ".ppm";
 
-  ImgWriter iw(ss.str(), s_l, s_l);
-  Scene sc(s_l, s_l);
+  ImgWriter iw(ss.str(), img_width, img_height);
+  Scene sc(img_width, img_height);
 
   Color white(1, 1, 1);
   double ai = 0.5;
@@ -506,14 +508,125 @@ int main(int argc, char** argv) {
 
     sc.add_light(0, -0.2, 0, white, white, white);
     sc.add_light(0, -0.8, 1.1, white, white, white);
+  } else if (scene == 13) {
+    Texture* elsa = new Texture("elsa.ppm");
+    Material* m_tex = new Material(
+      elsa, elsa, white,
+      3, 0, ai, di, si
+    );
+
+    Model box(0);
+    box.translate(Vector(0, 0, 2));
+    double w = 0.5;
+    box.add_triangle(
+      Point(-w, -w,  1), 0, 0,
+      Point( w, -w,  1), 1, 0,
+      Point(-w,  w,  1), 0, 1, 
+      m_tex
+    );
+    box.add_triangle(
+      Point( w, -w,  1), 1, 0,
+      Point( w,  w,  1), 1, 1,
+      Point(-w,  w,  1), 0, 1,
+      m_tex
+    );
+
+    box.add_triangle(
+      Point( 1, -w,  w), 0, 0,
+      Point( 1, -w, -w), 1, 0,
+      Point( 1,  w,  w), 0, 1,
+      m_tex
+    );
+    box.add_triangle(
+      Point( 1, -w, -w), 1, 0,
+      Point( 1,  w, -w), 1, 1,
+      Point( 1,  w,  w), 0, 1,
+      m_tex
+    );
+
+    box.add_triangle(
+      Point( w, -w, -1), 0, 0,
+      Point(-w, -w, -1), 1, 0,
+      Point( w,  w, -1), 0, 1,
+      m_tex
+    );
+    box.add_triangle(
+      Point(-w, -w, -1), 1, 0,
+      Point(-w,  w, -1), 1, 1,
+      Point( w,  w, -1), 0, 1,
+      m_tex
+    );
+
+    box.add_triangle(
+      Point(-1, -w, -w), 0, 0,
+      Point(-1, -w,  w), 1, 0,
+      Point(-1,  w, -w), 0, 1,
+      m_tex
+    );
+    box.add_triangle(
+      Point(-1, -w,  w), 1, 0,
+      Point(-1,  w,  w), 1, 1,
+      Point(-1,  w, -w), 0, 1,
+      m_tex
+    );
+
+    box.add_triangle(
+      Point(-w, -1, -w), 0, 0,
+      Point( w, -1, -w), 1, 0,
+      Point(-w, -1,  w), 0, 1,
+      m_tex
+    );
+    box.add_triangle(
+      Point( w, -1, -w), 1, 0,
+      Point( w, -1,  w), 1, 1,
+      Point(-w, -1,  w), 0, 1,
+      m_tex
+    );
+
+    box.add_triangle(
+      Point(-w,  1,  w), 0, 0,
+      Point( w,  1,  w), 1, 0,
+      Point(-w,  1, -w), 0, 1,
+      m_tex
+    );
+    box.add_triangle(
+      Point( w,  1,  w), 1, 0,
+      Point( w,  1, -w), 1, 1, 
+      Point(-w,  1, -w), 0, 1,
+      m_tex
+    );
+
+    Model bg(1);
+    double dist = 5;
+    bg.add_triangle(
+      Point(-100, -100, dist),
+      Point( 100, -100, dist),
+      Point(-100,  100, dist),
+      green
+    );
+    bg.add_triangle(
+      Point(-100,  100, dist),
+      Point( 100, -100, dist),
+      Point( 100,  100, dist),
+      green
+    );
+
+    sc.add_model(box);
+    sc.add_model(bg);
+
+    sc.rotate_cam(-1, Vector(1, -1, 1));
+    sc.translate_cam(Vector(-1.5, -1, 0.5));
+
+    sc.add_light(0, 0, 0, white, white, white);
+    sc.add_light(0, 0, 2, white, white, white);
   }
 
   std::cout << '\n';
   std::cout << "Rendering scene " << scene << "...\n";
   Color most_intense(0, 0, 0);
-  for (int y = 0; y < s_l; y += 1) {
-    for (int x = 0; x < s_l; x += 1) {
-      Color c = sc.color_at(x, y, 5, ANTIALIASING);
+  for (int y = 0; y < img_height; y += 1) {
+    for (int x = 0; x < img_width; x += 1) {
+      Color c = sc.color_at(x, y, 3, ANTIALIASING);
       iw.set(x, y, c);
 
       if (c.r + c.g + c.b > most_intense.r + most_intense.g + most_intense.b) {
@@ -521,8 +634,8 @@ int main(int argc, char** argv) {
       }
     }
 
-    if (y % (s_l / 10) == 0) {
-      std::cout << y << " of " << s_l << " rows rendered.\n";
+    if (y % (img_height / 10) == 0) {
+      std::cout << y << " of " << img_height << " rows rendered.\n";
     }
   }
 

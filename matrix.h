@@ -59,6 +59,14 @@ class Matrix {
         //o.x * m[3][0] + o.y * m[3][1] + o.z * m[3][2] + o.w * m[3][3]
       );
     }
+    Vector operator*(Vector o) {
+      return Vector(
+        o.x * m[0][0] + o.y * m[0][1] + o.z * m[0][2] + o.w * m[0][3],
+        o.x * m[1][0] + o.y * m[1][1] + o.z * m[1][2] + o.w * m[1][3],
+        o.x * m[2][0] + o.y * m[2][1] + o.z * m[2][2] + o.w * m[2][3]
+        //o.x * m[3][0] + o.y * m[3][1] + o.z * m[3][2] + o.w * m[3][3]
+      );
+    }
 
     std::string to_s() {
       std::stringstream ss;

@@ -24,10 +24,15 @@ class Scene {
     void add_model(Model m);
     void add_light(double x, double y, double z, Color i_ambient, Color i_diffuse, Color i_specular);
 
+    void add_transformation(Matrix next_matrix);
+    void translate_cam(Vector trans);
+    void rotate_cam(double radians, Vector axis);
+
   private:
     int width, height;
     std::vector<Model> models;
     std::vector<Light> lights;
+    Matrix transform;
 };
 
 #endif

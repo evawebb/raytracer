@@ -49,7 +49,7 @@ class Model {
 
   private:
     std::vector<Object*> objects;
-    Matrix inv_transform;
+    Matrix transform;
 };
 
 #endif

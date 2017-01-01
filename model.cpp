@@ -48,9 +48,9 @@ void Model::add_triangle(
 ) {
   objects.push_back(new Triangle(
     objects.size(),
-    inv_transform * i_a, i_a_texel_s, i_a_texel_t,
-    inv_transform * i_b, i_b_texel_s, i_b_texel_t,
-    inv_transform * i_c, i_c_texel_s, i_c_texel_t,
+    transform * i_a, i_a_texel_s, i_a_texel_t,
+    transform * i_b, i_b_texel_s, i_b_texel_t,
+    transform * i_c, i_c_texel_s, i_c_texel_t,
     i_material
   ));
 }
@@ -92,7 +92,7 @@ void Model::add_plane(Point i_loc, Vector i_normal, Material* i_material) {
 }
 
 void Model::add_transformation(Matrix next_matrix) {
-  inv_transform = next_matrix * inv_transform;
+  transform = next_matrix * transform;
 }
 
 void Model::translate(Vector trans) {

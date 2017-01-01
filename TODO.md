@@ -9,8 +9,11 @@
 - [x] Unified object class
 - [x] Model object
 - [x] Model transformations
-- [ ] Camera transformations
+- [x] Camera transformations
 - [ ] Reading in .obj files
 - [ ] Why does reversing a plane's normal change its shading? (See scene #7.)
 - [ ] Transparency
 - [ ] Refraction
+- [ ] Using points for texel coordinates
+- [ ] Integrate full-image render into Scene class
+- [ ] Why is the non-square picture off-center?
