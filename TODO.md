@@ -10,6 +10,7 @@
 - [x] Model object
 - [x] Model transformations
 - [x] Camera transformations
+- [x] Triangle normals
 - [ ] Reading in .obj files
 - [ ] Why does reversing a plane's normal change its shading? (See scene #7.)
 - [ ] Transparency

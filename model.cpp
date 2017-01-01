@@ -55,6 +55,48 @@ void Model::add_triangle(
   ));
 }
 
+void Model::add_triangle(
+  Point i_a, Vector i_a_normal,
+  Point i_b, Vector i_b_normal,
+  Point i_c, Vector i_c_normal
+) {
+  add_triangle(
+    i_a, i_a_normal,
+    i_b, i_b_normal,
+    i_c, i_c_normal,
+    NULL
+  );
+}
+
+void Model::add_triangle(
+  Point i_a, Vector i_a_normal,
+  Point i_b, Vector i_b_normal,
+  Point i_c, Vector i_c_normal,
+  Material* i_material
+) {
+  add_triangle(
+    i_a, i_a_normal, 0, 0,
+    i_b, i_b_normal, 0, 0,
+    i_c, i_c_normal, 0, 0,
+    i_material
+  );
+}
+
+void Model::add_triangle(
+  Point i_a, Vector i_a_normal, double i_a_texel_s, double i_a_texel_t,
+  Point i_b, Vector i_b_normal, double i_b_texel_s, double i_b_texel_t,
+  Point i_c, Vector i_c_normal, double i_c_texel_s, double i_c_texel_t,
+  Material* i_material
+) {
+  objects.push_back(new Triangle(
+    objects.size(),
+    transform * i_a, i_a_normal, i_a_texel_s, i_a_texel_t,
+    transform * i_b, i_b_normal, i_b_texel_s, i_b_texel_t,
+    transform * i_c, i_c_normal, i_c_texel_s, i_c_texel_t,
+    i_material
+  ));
+}
+
 void Model::add_sphere(Point i_loc, double i_radius) {
   objects.push_back(new Sphere(
     objects.size(),

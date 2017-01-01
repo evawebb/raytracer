@@ -619,6 +619,73 @@ int main(int argc, char** argv) {
 
     sc.add_light(0, 0, 0, white, white, white);
     sc.add_light(0, 0, 2, white, white, white);
+  } else if (scene == 14) {
+    Model bg(0);
+    double dist = 5;
+    bg.add_triangle(
+      Point(-100, -100, dist),
+      Point( 100, -100, dist),
+      Point(-100,  100, dist),
+      green
+    );
+    bg.add_triangle(
+      Point(-100,  100, dist),
+      Point( 100, -100, dist),
+      Point( 100,  100, dist),
+      green
+    );
+
+    Model sphere(1);
+    sphere.translate(Vector(0, 0, 2));
+    double step = 0.05 * 3.14159;
+    for (double i = 0; i < 2 * 3.14159; i += step) {
+      for (double j = 0; j < 3.14159; j += step) {
+        double top = j;
+        double bottom = j + step;
+        double left = i;
+        double right = i + step;
+
+        Point o(0, 0, 0);
+        Point a(
+          sin(top) * cos(left),
+          cos(top),
+          sin(top) * sin(left)
+        );
+        Point b(
+          sin(top) * cos(right),
+          cos(top),
+          sin(top) * sin(right)
+        );
+        Point c(
+          sin(bottom) * cos(left),
+          cos(bottom),
+          sin(bottom) * sin(left)
+        );
+        Point d(
+          sin(bottom) * cos(right),
+          cos(bottom),
+          sin(bottom) * sin(right)
+        );
+
+        sphere.add_triangle(
+          a, a - o,
+          b, b - o,
+          c, c - o,
+          blue
+        );
+        sphere.add_triangle(
+          c, c - o,
+          b, b - o,
+          d, d - o,
+          blue
+        );
+      }
+    }
+
+    sc.add_model(bg);
+    sc.add_model(sphere);
+
+    sc.add_light(-0.5, -0.9, 0, white, white, white);
   }
 
   std::cout << '\n';

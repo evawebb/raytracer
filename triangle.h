@@ -23,13 +23,38 @@ class Triangle : public Object {
       a = i_a; a_texel_s = i_a_texel_s; a_texel_t = i_a_texel_t;
       b = i_b; b_texel_s = i_b_texel_s; b_texel_t = i_b_texel_t;
       c = i_c; c_texel_s = i_c_texel_s; c_texel_t = i_c_texel_t;
+
+      a_to_b = b - a;
+      a_to_c = c - a;
+      normal = a_to_b.cross(a_to_c).normalized();
+      a_normal = normal;
+      b_normal = normal;
+      c_normal = normal;
+    }
+    Triangle(
+      int i_id,
+      Point i_a, Vector i_a_normal,
+      double i_a_texel_s, double i_a_texel_t,
+      Point i_b, Vector i_b_normal,
+      double i_b_texel_s, double i_b_texel_t,
+      Point i_c, Vector i_c_normal,
+      double i_c_texel_s, double i_c_texel_t,
+      Material* i_material
+    ) : Object(i_id, i_a, i_material) {
+      a = i_a; a_texel_s = i_a_texel_s; a_texel_t = i_a_texel_t;
+      a_normal = i_a_normal;
+      b = i_b; b_texel_s = i_b_texel_s; b_texel_t = i_b_texel_t;
+      b_normal = i_b_normal;
+      c = i_c; c_texel_s = i_c_texel_s; c_texel_t = i_c_texel_t;
+      c_normal = i_c_normal;
+
       a_to_b = b - a;
       a_to_c = c - a;
       normal = a_to_b.cross(a_to_c).normalized();
     }
 
     Point a, b, c;
-    Vector a_to_b, a_to_c, normal;
+    Vector a_to_b, a_to_c, normal, a_normal, b_normal, c_normal;
     double a_texel_s, a_texel_t, b_texel_s, b_texel_t, c_texel_s, c_texel_t;
     double u, v;
 

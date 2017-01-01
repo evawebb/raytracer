@@ -37,6 +37,23 @@ class Model {
       Point i_c, double i_c_texel_s, double i_c_texel_t,
       Material* i_material
     );
+    void add_triangle(
+      Point i_a, Vector i_a_normal,
+      Point i_b, Vector i_b_normal,
+      Point i_c, Vector i_c_normal
+    );
+    void add_triangle(
+      Point i_a, Vector i_a_normal,
+      Point i_b, Vector i_b_normal,
+      Point i_c, Vector i_c_normal,
+      Material* i_material
+    );
+    void add_triangle(
+      Point i_a, Vector i_a_normal, double i_a_texel_s, double i_a_texel_t,
+      Point i_b, Vector i_b_normal, double i_b_texel_s, double i_b_texel_t,
+      Point i_c, Vector i_c_normal, double i_c_texel_s, double i_c_texel_t,
+      Material* i_material
+    );
     void add_sphere(Point i_loc, double i_radius);
     void add_sphere(Point i_loc, double i_radius, Material* i_material);
     void add_plane(Point i_loc, Vector i_normal);

@@ -36,13 +36,16 @@ IntersectionEvent Triangle::intersect(Point origin, Vector direction) {
       double texel_s = r * a_texel_s + u * b_texel_s + v * c_texel_s;
       double texel_t = r * a_texel_t + u * b_texel_t + v * c_texel_t;
 
+      // Interpolate the vertex normals to get the normal at this point.
+      Vector local_normal = a_normal * r + b_normal * u + c_normal * v;
+
       return IntersectionEvent(
         origin,
         direction,
         true,
         intersection,
         t,
-        normal,
+        local_normal,
         id,
         u,
         v,
