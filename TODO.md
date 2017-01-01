@@ -11,10 +11,10 @@
 - [x] Model transformations
 - [x] Camera transformations
 - [x] Triangle normals
+- [ ] Using points for texel coordinates
 - [ ] Reading in .obj files
 - [ ] Why does reversing a plane's normal change its shading? (See scene #7.)
 - [ ] Transparency
 - [ ] Refraction
-- [ ] Using points for texel coordinates
 - [ ] Integrate full-image render into Scene class
 - [ ] Why is the non-square picture off-center?

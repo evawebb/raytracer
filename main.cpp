@@ -686,6 +686,19 @@ int main(int argc, char** argv) {
     sc.add_model(sphere);
 
     sc.add_light(-0.5, -0.9, 0, white, white, white);
+  } else if (scene == 15) {
+    Model cube(0);
+    cube.rotate(1, Vector(0.5, -1, 0.5));
+    cube.translate(Vector(0, 0, 2));
+    cube.load_obj_file("models/cube.obj");
+
+    Model bg(1);
+    bg.add_plane(Point(0, 0, 5), Vector(0, 0, -1), green);
+
+    sc.add_model(cube);
+    sc.add_model(bg);
+
+    sc.add_light(0, -0.5, 0, white, white, white);
   }
 
   std::cout << '\n';

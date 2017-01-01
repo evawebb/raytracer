@@ -1,6 +1,10 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 #include <vector>
 #include "object.h"
 #include "sphere.h"
@@ -23,6 +27,8 @@ class Model {
     int model_id;
 
     IntersectionEvent intersect(Point origin, Vector direction);
+
+    void load_obj_file(std::string fn);
 
     void add_triangle(Point i_a, Point i_b, Point i_c);
     void add_triangle(

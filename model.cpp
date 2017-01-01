@@ -14,6 +14,18 @@ IntersectionEvent Model::intersect(Point origin, Vector direction) {
   return n_ie;
 }
 
+void Model::load_obj_file(std::string fn) {
+  std::ifstream in_file(fn.c_str());
+  std::string line;
+  std::vector<Point> vertices;
+
+  while (getline(in_file, line)) {
+    std::cout << line << '\n';
+  }
+
+  in_file.close();
+}
+
 void Model::add_triangle(Point i_a, Point i_b, Point i_c) {
   add_triangle(i_a, 0, 0, i_b, 0, 0, i_c, 0, 0, NULL);
 }

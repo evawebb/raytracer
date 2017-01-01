@@ -38,7 +38,7 @@ Color Scene::color_at(int x, int y, double focal_length, int aa) {
         origin, 
         direction,
         10,
-        500 <= x && x <= 502 && y == 400
+        false // 500 <= x && x <= 502 && y == 400
       );
       total_r += c.r;
       total_g += c.g;

@@ -22,7 +22,7 @@ void Texture::load_image(std::string fn) {
   getline(in_file, line);
   limit = atof(line.c_str());
 
-  while(getline(in_file, line)) {
+  while (getline(in_file, line)) {
     while (line.find_first_of(' ') != std::string::npos) {
       std::string s_n = line.substr(0, line.find_first_of(' '));
       line.erase(0, line.find_first_of(' ') + 1);
