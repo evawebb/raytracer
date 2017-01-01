@@ -52,9 +52,9 @@ void Texture::load_image(std::string fn) {
   }
 }
 
-Color Texture::texel(double s, double t) {
-  int col = std::min(s * width, (double)(width - 1));
-  int row = std::min(t * height, (double)(height - 1));
+Color Texture::texel(Point t) {
+  int col = std::min(t.x * width, (double)(width - 1));
+  int row = std::min(t.y * height, (double)(height - 1));
   if (width > 0 && height > 0) {
     return data[row][col];
   } else {

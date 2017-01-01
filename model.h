@@ -32,15 +32,15 @@ class Model {
 
     void add_triangle(Point i_a, Point i_b, Point i_c);
     void add_triangle(
-      Point i_a, double i_a_texel_s, double i_a_texel_t,
-      Point i_b, double i_b_texel_s, double i_b_texel_t,
-      Point i_c, double i_c_texel_s, double i_c_texel_t
+      Point i_a, Point i_a_texel,
+      Point i_b, Point i_b_texel,
+      Point i_c, Point i_c_texel
     );
     void add_triangle(Point i_a, Point i_b, Point i_c, Material* i_material);
     void add_triangle(
-      Point i_a, double i_a_texel_s, double i_a_texel_t,
-      Point i_b, double i_b_texel_s, double i_b_texel_t,
-      Point i_c, double i_c_texel_s, double i_c_texel_t,
+      Point i_a, Point i_a_texel,
+      Point i_b, Point i_b_texel,
+      Point i_c, Point i_c_texel,
       Material* i_material
     );
     void add_triangle(
@@ -55,9 +55,9 @@ class Model {
       Material* i_material
     );
     void add_triangle(
-      Point i_a, Vector i_a_normal, double i_a_texel_s, double i_a_texel_t,
-      Point i_b, Vector i_b_normal, double i_b_texel_s, double i_b_texel_t,
-      Point i_c, Vector i_c_normal, double i_c_texel_s, double i_c_texel_t,
+      Point i_a, Vector i_a_normal, Point i_a_texel,
+      Point i_b, Vector i_b_normal, Point i_b_texel,
+      Point i_c, Vector i_c_normal, Point i_c_texel,
       Material* i_material
     );
     void add_sphere(Point i_loc, double i_radius);

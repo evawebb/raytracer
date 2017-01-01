@@ -17,8 +17,7 @@ class IntersectionEvent {
       object_id = -1;
       u = -1;
       v = -1;
-      texel_s = -1;
-      texel_t = -1;
+      texel = Point(0, 0, 0);
       material = NULL;
     }
     IntersectionEvent(Point i_origin, Vector i_direction) {
@@ -31,8 +30,7 @@ class IntersectionEvent {
       object_id = -1;
       u = -1;
       v = -1;
-      texel_s = -1;
-      texel_t = -1;
+      texel = Point(0, 0, 0);
       material = NULL;
     }
     IntersectionEvent(
@@ -45,8 +43,7 @@ class IntersectionEvent {
       int i_object_id,
       double i_u,
       double i_v,
-      double i_texel_s,
-      double i_texel_t,
+      Point i_texel,
       Material* i_material
     ) {
       origin = i_origin;
@@ -58,15 +55,14 @@ class IntersectionEvent {
       object_id = i_object_id;
       u = i_u;
       v = i_v;
-      texel_s = i_texel_s;
-      texel_t = i_texel_t;
+      texel = i_texel;
       material = i_material;
     }
 
-    Point origin, intersection;
+    Point origin, intersection, texel;
     Vector direction, normal;
     bool intersected;
-    double distance, u, v, texel_s, texel_t;
+    double distance, u, v;
     int model_id, object_id;
     Material* material;
 };

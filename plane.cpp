@@ -16,8 +16,7 @@ IntersectionEvent Plane::intersect(Point origin, Vector direction) {
       id,
       0,
       0,
-      0,
-      0,
+      Point(0, 0),
       material
     );
   } else {

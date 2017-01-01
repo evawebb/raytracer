@@ -7,6 +7,7 @@
 #include <iostream>
 #include <vector>
 #include "color.h"
+#include "point.h"
 
 class Texture {
   public:
@@ -16,7 +17,7 @@ class Texture {
     }
     ~Texture();
 
-    Color texel(double u, double v);
+    Color texel(Point t);
 
     Color** data;
     int width, height;

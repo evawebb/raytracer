@@ -269,15 +269,15 @@ int main(int argc, char** argv) {
 
     Model m(0);
     m.add_triangle(
-      Point(-1, -1,    2), 0, 0,
-      Point(-1,  1,    1), 0, 1,
-      Point( 1, -1,  1.5), 1, 0,
+      Point(-1, -1,    2), Point(0, 0),
+      Point(-1,  1,    1), Point(0, 1),
+      Point( 1, -1,  1.5), Point(1, 0),
       txed
     );
     m.add_triangle(
-      Point( 1, -1,  1.5), 1, 0,
-      Point(-1,  1,    1), 0, 1,
-      Point( 1,  1,  0.5), 1, 1,
+      Point( 1, -1,  1.5), Point(1, 0),
+      Point(-1,  1,    1), Point(0, 1),
+      Point( 1,  1,  0.5), Point(1, 1),
       txed
     );
 
@@ -296,80 +296,80 @@ int main(int argc, char** argv) {
 
     Model box(0);
     box.add_triangle(
-      Point(-1, -1,  1.9), 0, 0,
-      Point( 1, -1,  1.9), 1, 0,
-      Point(-1,  1,  1.9), 0, 1,
+      Point(-1, -1,  1.9), Point(0, 0),
+      Point( 1, -1,  1.9), Point(1, 0),
+      Point(-1,  1,  1.9), Point(0, 1),
       m
     );
     box.add_triangle(
-      Point( 1, -1,  1.9), 1, 0,
-      Point( 1,  1,  1.9), 1, 1,
-      Point(-1,  1,  1.9), 0, 1,
-      m
-    );
-
-    box.add_triangle(
-      Point( 1, -1,  1.9), 0, 0,
-      Point( 1, -1, -0.1), 1, 0,
-      Point( 1,  1,  1.9), 0, 1,
-      m
-    );
-    box.add_triangle(
-      Point( 1, -1, -0.1), 1, 0,
-      Point( 1,  1, -0.1), 1, 1,
-      Point( 1,  1,  1.9), 0, 1,
+      Point( 1, -1,  1.9), Point(1, 0),
+      Point( 1,  1,  1.9), Point(1, 1),
+      Point(-1,  1,  1.9), Point(0, 1),
       m
     );
 
     box.add_triangle(
-      Point( 1, -1, -0.1), 0, 0,
-      Point(-1, -1, -0.1), 1, 0,
-      Point( 1,  1, -0.1), 0, 1,
+      Point( 1, -1,  1.9), Point(0, 0),
+      Point( 1, -1, -0.1), Point(1, 0),
+      Point( 1,  1,  1.9), Point(0, 1),
       m
     );
     box.add_triangle(
-      Point(-1, -1, -0.1), 1, 0,
-      Point(-1,  1, -0.1), 1, 1,
-      Point( 1,  1, -0.1), 0, 1,
-      m
-    );
-
-    box.add_triangle(
-      Point(-1, -1, -0.1), 0, 0,
-      Point(-1, -1,  1.9), 1, 0,
-      Point(-1,  1, -0.1), 0, 1,
-      m
-    );
-    box.add_triangle(
-      Point(-1, -1,  1.9), 1, 0,
-      Point(-1,  1,  1.9), 1, 1,
-      Point(-1,  1, -0.1), 0, 1,
+      Point( 1, -1, -0.1), Point(1, 0),
+      Point( 1,  1, -0.1), Point(1, 1),
+      Point( 1,  1,  1.9), Point(0, 1),
       m
     );
 
     box.add_triangle(
-      Point(-1, -1, -0.1), 0, 0,
-      Point( 1, -1, -0.1), 1, 0,
-      Point(-1, -1,  1.9), 0, 1,
+      Point( 1, -1, -0.1), Point(0, 0),
+      Point(-1, -1, -0.1), Point(1, 0),
+      Point( 1,  1, -0.1), Point(0, 1),
       m
     );
     box.add_triangle(
-      Point( 1, -1, -0.1), 1, 0,
-      Point( 1, -1,  1.9), 1, 1,
-      Point(-1, -1,  1.9), 0, 1,
+      Point(-1, -1, -0.1), Point(1, 0),
+      Point(-1,  1, -0.1), Point(1, 1),
+      Point( 1,  1, -0.1), Point(0, 1),
       m
     );
 
     box.add_triangle(
-      Point(-1,  1,  1.9), 0, 0,
-      Point( 1,  1,  1.9), 1, 0,
-      Point(-1,  1, -0.1), 0, 1,
+      Point(-1, -1, -0.1), Point(0, 0),
+      Point(-1, -1,  1.9), Point(1, 0),
+      Point(-1,  1, -0.1), Point(0, 1),
       m
     );
     box.add_triangle(
-      Point( 1,  1,  1.9), 1, 0,
-      Point( 1,  1, -0.1), 1, 1, 
-      Point(-1,  1, -0.1), 0, 1,
+      Point(-1, -1,  1.9), Point(1, 0),
+      Point(-1,  1,  1.9), Point(1, 1),
+      Point(-1,  1, -0.1), Point(0, 1),
+      m
+    );
+
+    box.add_triangle(
+      Point(-1, -1, -0.1), Point(0, 0),
+      Point( 1, -1, -0.1), Point(1, 0),
+      Point(-1, -1,  1.9), Point(0, 1),
+      m
+    );
+    box.add_triangle(
+      Point( 1, -1, -0.1), Point(1, 0),
+      Point( 1, -1,  1.9), Point(1, 1),
+      Point(-1, -1,  1.9), Point(0, 1),
+      m
+    );
+
+    box.add_triangle(
+      Point(-1,  1,  1.9), Point(0, 0),
+      Point( 1,  1,  1.9), Point(1, 0),
+      Point(-1,  1, -0.1), Point(0, 1),
+      m
+    );
+    box.add_triangle(
+      Point( 1,  1,  1.9), Point(1, 0),
+      Point( 1,  1, -0.1), Point(1, 1), 
+      Point(-1,  1, -0.1), Point(0, 1),
       m
     );
 
@@ -395,15 +395,15 @@ int main(int argc, char** argv) {
     model.scale(2, 1, 1);
     model.translate(Vector(0.3, -0.2, 3));
     model.add_triangle(
-      Point(-1, -1,   2), 0, 0,
-      Point(-1,  1,   1), 0, 1,
-      Point( 1, -1, 1.5), 1, 0,
+      Point(-1, -1,   2), Point(0, 0),
+      Point(-1,  1,   1), Point(0, 1),
+      Point( 1, -1, 1.5), Point(1, 0),
       txed
     );
     model.add_triangle(
-      Point( 1, -1, 1.5), 1, 0,
-      Point(-1,  1,   1), 0, 1,
-      Point( 1,  1, 0.5), 1, 1,
+      Point( 1, -1, 1.5), Point(1, 0),
+      Point(-1,  1,   1), Point(0, 1),
+      Point( 1,  1, 0.5), Point(1, 1),
       txed
     );
 
@@ -423,80 +423,80 @@ int main(int argc, char** argv) {
     box.scale(3, 3, 3);
     box.rotate(0.5, Vector(1, -1, 1));
     box.add_triangle(
-      Point(-1, -1,  1), 0, 0,
-      Point( 1, -1,  1), 1, 0,
-      Point(-1,  1,  1), 0, 1,
+      Point(-1, -1,  1), Point(0, 0),
+      Point( 1, -1,  1), Point(1, 0),
+      Point(-1,  1,  1), Point(0, 1),
       m
     );
     box.add_triangle(
-      Point( 1, -1,  1), 1, 0,
-      Point( 1,  1,  1), 1, 1,
-      Point(-1,  1,  1), 0, 1,
-      m
-    );
-
-    box.add_triangle(
-      Point( 1, -1,  1), 0, 0,
-      Point( 1, -1, -1), 1, 0,
-      Point( 1,  1,  1), 0, 1,
-      m
-    );
-    box.add_triangle(
-      Point( 1, -1, -1), 1, 0,
-      Point( 1,  1, -1), 1, 1,
-      Point( 1,  1,  1), 0, 1,
+      Point( 1, -1,  1), Point(1, 0),
+      Point( 1,  1,  1), Point(1, 1),
+      Point(-1,  1,  1), Point(0, 1),
       m
     );
 
     box.add_triangle(
-      Point( 1, -1, -1), 0, 0,
-      Point(-1, -1, -1), 1, 0,
-      Point( 1,  1, -1), 0, 1,
+      Point( 1, -1,  1), Point(0, 0),
+      Point( 1, -1, -1), Point(1, 0),
+      Point( 1,  1,  1), Point(0, 1),
       m
     );
     box.add_triangle(
-      Point(-1, -1, -1), 1, 0,
-      Point(-1,  1, -1), 1, 1,
-      Point( 1,  1, -1), 0, 1,
-      m
-    );
-
-    box.add_triangle(
-      Point(-1, -1, -1), 0, 0,
-      Point(-1, -1,  1), 1, 0,
-      Point(-1,  1, -1), 0, 1,
-      m
-    );
-    box.add_triangle(
-      Point(-1, -1,  1), 1, 0,
-      Point(-1,  1,  1), 1, 1,
-      Point(-1,  1, -1), 0, 1,
+      Point( 1, -1, -1), Point(1, 0),
+      Point( 1,  1, -1), Point(1, 1),
+      Point( 1,  1,  1), Point(0, 1),
       m
     );
 
     box.add_triangle(
-      Point(-1, -1, -1), 0, 0,
-      Point( 1, -1, -1), 1, 0,
-      Point(-1, -1,  1), 0, 1,
+      Point( 1, -1, -1), Point(0, 0),
+      Point(-1, -1, -1), Point(1, 0),
+      Point( 1,  1, -1), Point(0, 1),
       m
     );
     box.add_triangle(
-      Point( 1, -1, -1), 1, 0,
-      Point( 1, -1,  1), 1, 1,
-      Point(-1, -1,  1), 0, 1,
+      Point(-1, -1, -1), Point(1, 0),
+      Point(-1,  1, -1), Point(1, 1),
+      Point( 1,  1, -1), Point(0, 1),
       m
     );
 
     box.add_triangle(
-      Point(-1,  1,  1), 0, 0,
-      Point( 1,  1,  1), 1, 0,
-      Point(-1,  1, -1), 0, 1,
+      Point(-1, -1, -1), Point(0, 0),
+      Point(-1, -1,  1), Point(1, 0),
+      Point(-1,  1, -1), Point(0, 1),
       m
     );
     box.add_triangle(
-      Point( 1,  1,  1), 1, 0,
-      Point( 1,  1, -1), 1, 1, 
-      Point(-1,  1, -1), 0, 1,
+      Point(-1, -1,  1), Point(1, 0),
+      Point(-1,  1,  1), Point(1, 1),
+      Point(-1,  1, -1), Point(0, 1),
+      m
+    );
+
+    box.add_triangle(
+      Point(-1, -1, -1), Point(0, 0),
+      Point( 1, -1, -1), Point(1, 0),
+      Point(-1, -1,  1), Point(0, 1),
+      m
+    );
+    box.add_triangle(
+      Point( 1, -1, -1), Point(1, 0),
+      Point( 1, -1,  1), Point(1, 1),
+      Point(-1, -1,  1), Point(0, 1),
+      m
+    );
+
+    box.add_triangle(
+      Point(-1,  1,  1), Point(0, 0),
+      Point( 1,  1,  1), Point(1, 0),
+      Point(-1,  1, -1), Point(0, 1),
+      m
+    );
+    box.add_triangle(
+      Point( 1,  1,  1), Point(1, 0),
+      Point( 1,  1, -1), Point(1, 1), 
+      Point(-1,  1, -1), Point(0, 1),
       m
     );
 
@@ -519,80 +519,80 @@ int main(int argc, char** argv) {
     box.translate(Vector(0, 0, 2));
     double w = 0.5;
     box.add_triangle(
-      Point(-w, -w,  1), 0, 0,
-      Point( w, -w,  1), 1, 0,
-      Point(-w,  w,  1), 0, 1, 
+      Point(-w, -w,  1), Point(0, 0),
+      Point( w, -w,  1), Point(1, 0),
+      Point(-w,  w,  1), Point(0, 1), 
       m_tex
     );
     box.add_triangle(
-      Point( w, -w,  1), 1, 0,
-      Point( w,  w,  1), 1, 1,
-      Point(-w,  w,  1), 0, 1,
-      m_tex
-    );
-
-    box.add_triangle(
-      Point( 1, -w,  w), 0, 0,
-      Point( 1, -w, -w), 1, 0,
-      Point( 1,  w,  w), 0, 1,
-      m_tex
-    );
-    box.add_triangle(
-      Point( 1, -w, -w), 1, 0,
-      Point( 1,  w, -w), 1, 1,
-      Point( 1,  w,  w), 0, 1,
+      Point( w, -w,  1), Point(1, 0),
+      Point( w,  w,  1), Point(1, 1),
+      Point(-w,  w,  1), Point(0, 1),
       m_tex
     );
 
     box.add_triangle(
-      Point( w, -w, -1), 0, 0,
-      Point(-w, -w, -1), 1, 0,
-      Point( w,  w, -1), 0, 1,
+      Point( 1, -w,  w), Point(0, 0),
+      Point( 1, -w, -w), Point(1, 0),
+      Point( 1,  w,  w), Point(0, 1),
       m_tex
     );
     box.add_triangle(
-      Point(-w, -w, -1), 1, 0,
-      Point(-w,  w, -1), 1, 1,
-      Point( w,  w, -1), 0, 1,
-      m_tex
-    );
-
-    box.add_triangle(
-      Point(-1, -w, -w), 0, 0,
-      Point(-1, -w,  w), 1, 0,
-      Point(-1,  w, -w), 0, 1,
-      m_tex
-    );
-    box.add_triangle(
-      Point(-1, -w,  w), 1, 0,
-      Point(-1,  w,  w), 1, 1,
-      Point(-1,  w, -w), 0, 1,
+      Point( 1, -w, -w), Point(1, 0),
+      Point( 1,  w, -w), Point(1, 1),
+      Point( 1,  w,  w), Point(0, 1),
       m_tex
     );
 
     box.add_triangle(
-      Point(-w, -1, -w), 0, 0,
-      Point( w, -1, -w), 1, 0,
-      Point(-w, -1,  w), 0, 1,
+      Point( w, -w, -1), Point(0, 0),
+      Point(-w, -w, -1), Point(1, 0),
+      Point( w,  w, -1), Point(0, 1),
       m_tex
     );
     box.add_triangle(
-      Point( w, -1, -w), 1, 0,
-      Point( w, -1,  w), 1, 1,
-      Point(-w, -1,  w), 0, 1,
+      Point(-w, -w, -1), Point(1, 0),
+      Point(-w,  w, -1), Point(1, 1),
+      Point( w,  w, -1), Point(0, 1),
       m_tex
     );
 
     box.add_triangle(
-      Point(-w,  1,  w), 0, 0,
-      Point( w,  1,  w), 1, 0,
-      Point(-w,  1, -w), 0, 1,
+      Point(-1, -w, -w), Point(0, 0),
+      Point(-1, -w,  w), Point(1, 0),
+      Point(-1,  w, -w), Point(0, 1),
       m_tex
     );
     box.add_triangle(
-      Point( w,  1,  w), 1, 0,
-      Point( w,  1, -w), 1, 1, 
-      Point(-w,  1, -w), 0, 1,
+      Point(-1, -w,  w), Point(1, 0),
+      Point(-1,  w,  w), Point(1, 1),
+      Point(-1,  w, -w), Point(0, 1),
+      m_tex
+    );
+
+    box.add_triangle(
+      Point(-w, -1, -w), Point(0, 0),
+      Point( w, -1, -w), Point(1, 0),
+      Point(-w, -1,  w), Point(0, 1),
+      m_tex
+    );
+    box.add_triangle(
+      Point( w, -1, -w), Point(1, 0),
+      Point( w, -1,  w), Point(1, 1),
+      Point(-w, -1,  w), Point(0, 1),
+      m_tex
+    );
+
+    box.add_triangle(
+      Point(-w,  1,  w), Point(0, 0),
+      Point( w,  1,  w), Point(1, 0),
+      Point(-w,  1, -w), Point(0, 1),
+      m_tex
+    );
+    box.add_triangle(
+      Point( w,  1,  w), Point(1, 0),
+      Point( w,  1, -w), Point(1, 1), 
+      Point(-w,  1, -w), Point(0, 1),
       m_tex
     );
 

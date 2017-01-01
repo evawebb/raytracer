@@ -33,8 +33,7 @@ IntersectionEvent Triangle::intersect(Point origin, Vector direction) {
       // Using the texel coordinates of the triangle's vertices, calculate
       // the texel coordinates of this point.
       double r = 1 - u - v;
-      double texel_s = r * a_texel_s + u * b_texel_s + v * c_texel_s;
-      double texel_t = r * a_texel_t + u * b_texel_t + v * c_texel_t;
+      Point local_texel = a_texel * r + b_texel * u + c_texel * v;
 
       // Interpolate the vertex normals to get the normal at this point.
       Vector local_normal = a_normal * r + b_normal * u + c_normal * v;
@@ -49,8 +48,7 @@ IntersectionEvent Triangle::intersect(Point origin, Vector direction) {
         id,
         u,
         v,
-        texel_s,
-        texel_t,
+        local_texel,
         material
       );
     } else {

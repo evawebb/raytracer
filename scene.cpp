@@ -81,8 +81,7 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit, bool print) {
         std::cout << "The intersection was at " << n_ie.intersection.to_s() << " on object " << n_ie.object_id << " of model " << n_ie.model_id << ".\n";
         std::cout << "Barycentric u: " << n_ie.u << '\n';
         std::cout << "Barycentric v: " << n_ie.v << '\n';
-        std::cout << "Texel s: " << n_ie.texel_s << '\n';
-        std::cout << "Texel t: " << n_ie.texel_t << '\n';
+        std::cout << "Texel: " << n_ie.texel.to_s() << '\n';
         std::cout << "Object material summary:\n";
         std::cout << "  Shininess: " << n_ie.material->shininess << '\n';
         std::cout << "  Reflectivity: " << n_ie.material->reflectivity << '\n';
@@ -111,14 +110,14 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit, bool print) {
 
         Color this_ac =
           lights[l].ambient *
-          n_ie.material->ambient_texture->texel(n_ie.texel_s, n_ie.texel_t);
+          n_ie.material->ambient_texture->texel(n_ie.texel);
         ambient_comp.r += this_ac.r;
         ambient_comp.g += this_ac.g;
         ambient_comp.b += this_ac.b;
 
         if (print) {
           std::cout << "  Light ambient color: " << lights[l].ambient.to_s() << '\n';
-          std::cout << "  Material ambient color: " << n_ie.material->ambient_texture->texel(n_ie.texel_s, n_ie.texel_t).to_s() << '\n';
+          std::cout << "  Material ambient color: " << n_ie.material->ambient_texture->texel(n_ie.texel).to_s() << '\n';
           std::cout << "  Ambient component: " << this_ac.to_s() << '\n';
         }
 
@@ -132,7 +131,7 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit, bool print) {
 
           Color this_dc =
             lights[l].diffuse *
-            n_ie.material->diffuse_texture->texel(n_ie.texel_s, n_ie.texel_t) *
+            n_ie.material->diffuse_texture->texel(n_ie.texel) *
             std::max(0.0, l_vector.dot(n_ie.normal));
           diffuse_comp.r += this_dc.r;
           diffuse_comp.g += this_dc.g;
@@ -140,7 +139,7 @@ Color Scene::cast_ray(Point origin, Vector direction, int limit, bool print) {
 
           if (print) {
             std::cout << "  Light diffuse color: " << lights[l].diffuse.to_s() << '\n';
-            std::cout << "  Material diffuse color: " << n_ie.material->diffuse_texture->texel(n_ie.texel_s, n_ie.texel_t).to_s() << '\n';
+            std::cout << "  Material diffuse color: " << n_ie.material->diffuse_texture->texel(n_ie.texel).to_s() << '\n';
             std::cout << "  Diffuse dot product multiplier: " << std::max(0.0, l_vector.dot(n_ie.normal)) << '\n';
             std::cout << "  Diffuse component: " << this_dc.to_s() << '\n';
           }
