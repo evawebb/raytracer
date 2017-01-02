@@ -687,18 +687,20 @@ int main(int argc, char** argv) {
 
     sc.add_light(-0.5, -0.9, 0, white, white, white);
   } else if (scene == 15) {
-    Model cube(0);
-    cube.rotate(0.5, Vector(0, 1, 0));
-    cube.rotate(1.4, Vector(1, 0, 0));
-    cube.translate(Vector(0, 0, 5));
-    cube.load_obj_file("models/cube.obj", blue);
+    Model pikachu(0);
+    pikachu.scale(0.008, 0.008, 0.008);
+    pikachu.rotate(3.5, Vector(1, 0, 0));
+    pikachu.rotate(-0.4, Vector(0, 1, 0));
+    pikachu.translate(Vector(0, 1, 1.2));
+    pikachu.load_obj_file("models/Pikachu/singletex/pikachu.obj", blue);
 
     Model bg(1);
-    bg.add_plane(Point(0, 0, 10), Vector(0, 0, -1), green);
+    bg.add_plane(Point( 0,  0,     2), Vector( 0,  0, -1), green);
 
-    sc.add_model(cube);
+    sc.add_model(pikachu);
     sc.add_model(bg);
 
+    sc.add_light(0, -0.99, 1, white, white, white);
     sc.add_light(0, -0.5, 0, white, white, white);
   }
 
@@ -715,8 +717,8 @@ int main(int argc, char** argv) {
       }
     }
 
-    if (y % (img_height / 10) == 0) {
-      std::cout << y << " of " << img_height << " rows rendered.\n";
+    if ((y + 1) % (img_height / 100) == 0) {
+      std::cout << (y + 1) << " of " << img_height << " rows rendered.\n";
     }
   }
 

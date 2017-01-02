@@ -14,13 +14,82 @@ IntersectionEvent Model::intersect(Point origin, Vector direction) {
   return n_ie;
 }
 
-void Model::load_obj_file(std::string fn) {
+std::vector<std::string> Model::split(std::string raw, char delim, bool cluster) {
+  std::vector<std::string> out;
+
+  if (cluster) {
+    std::string group_string = std::string() + delim + delim;
+    size_t ind = raw.find(group_string);
+    while (ind != std::string::npos) {
+      raw.erase(ind + 1, 1);
+      ind = raw.find(group_string);
+    }
+  }
+
+  while (raw.find_first_of(delim) != std::string::npos) {
+    out.push_back(raw.substr(0, raw.find_first_of(delim)));
+    raw.erase(0, raw.find_first_of(delim) + 1);
+  }
+
+  if (raw.size() > 0) {
+    out.push_back(raw);
+  }
+  
+  return out;
+}
+
+void Model::load_obj_file(std::string fn, Material* mat) {
   std::ifstream in_file(fn.c_str());
   std::string line;
   std::vector<Point> vertices;
+  std::vector<Point> texel_coordinates;
+  std::vector<Vector> normals;
+  bool smooth = true;
+
+  vertices.push_back(Point(0, 0, 0));
+  texel_coordinates.push_back(Point(0, 0));
+  normals.push_back(Vector(0, 0, 0));
 
   while (getline(in_file, line)) {
-    std::cout << line << '\n';
+    if (line[0] != '#' && line.size() > 0) {
+      std::vector<std::string> split_line = split(line, ' ', true);
+
+      if (split_line[0].compare("v") == 0) {
+        vertices.push_back(Point(
+          atof(split_line[1].c_str()),
+          atof(split_line[2].c_str()),
+          atof(split_line[3].c_str())
+        ));
+      } else if (split_line[0].compare("vt") == 0) {
+        texel_coordinates.push_back(Point(
+          atof(split_line[1].c_str()),
+          atof(split_line[2].c_str())
+        ));
+      } else if (split_line[0].compare("vn") == 0) {
+        normals.push_back(Vector(
+          atof(split_line[1].c_str()),
+          atof(split_line[2].c_str()),
+          atof(split_line[3].c_str())
+        ));
+      } else if (split_line[0].compare("f") == 0) {
+        std::vector<std::string> v1 = split(split_line[1], '/', false);
+        std::vector<std::string> v2 = split(split_line[2], '/', false);
+        std::vector<std::string> v3 = split(split_line[3], '/', false);
+
+        add_triangle(
+          vertices[         atof(v1[0].c_str())],
+          normals[          atof(v1[2].c_str())],
+          texel_coordinates[atof(v1[1].c_str())],
+          vertices[         atof(v2[0].c_str())],
+          normals[          atof(v2[2].c_str())],
+          texel_coordinates[atof(v2[1].c_str())],
+          vertices[         atof(v3[0].c_str())],
+          normals[          atof(v3[2].c_str())],
+          texel_coordinates[atof(v3[1].c_str())],
+          mat
+        );
+      }
+    }
   }
 
   in_file.close();
