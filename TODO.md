@@ -18,3 +18,4 @@
 - [ ] Refraction
 - [ ] Integrate full-image render into Scene class
 - [ ] Why is the non-square picture off-center?
+- [ ] Optimize model and triangle intersections

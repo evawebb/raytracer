@@ -8,7 +8,7 @@
 #include "texture.h"
 #include "matrix.h"
 
-#define S_L 1080
+#define S_L 108
 #define ANTIALIASING 1
 
 double rand_double() {

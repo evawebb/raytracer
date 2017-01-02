@@ -50,12 +50,13 @@ class Triangle : public Object {
 
       a_to_b = b - a;
       a_to_c = c - a;
+      max_dist = std::max(a_to_b.mag(), a_to_c.mag());
       normal = a_to_b.cross(a_to_c).normalized();
     }
 
     Point a, b, c, a_texel, b_texel, c_texel;
     Vector a_to_b, a_to_c, normal, a_normal, b_normal, c_normal;
-    double u, v;
+    double u, v, max_dist;
 
     IntersectionEvent intersect(Point origin, Vector direction);
     std::string to_s() {
