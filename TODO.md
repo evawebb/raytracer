@@ -19,3 +19,4 @@
 - [ ] Integrate full-image render into Scene class
 - [ ] Why is the non-square picture off-center?
 - [ ] Optimize model and triangle intersections
+- [ ] Convert specular color to a color texture

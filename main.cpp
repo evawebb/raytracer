@@ -8,7 +8,7 @@
 #include "texture.h"
 #include "matrix.h"
 
-#define S_L 108
+#define S_L 1080
 #define ANTIALIASING 1
 
 double rand_double() {
@@ -692,7 +692,7 @@ int main(int argc, char** argv) {
     pikachu.rotate(3.5, Vector(1, 0, 0));
     pikachu.rotate(-0.4, Vector(0, 1, 0));
     pikachu.translate(Vector(0, 1, 1.2));
-    pikachu.load_obj_file("models/Pikachu/singletex/pikachu.obj", blue);
+    pikachu.load_obj_file("models/pikachu.obj", blue);
 
     Model bg(1);
     bg.add_plane(Point( 0,  0,     2), Vector( 0,  0, -1), green);

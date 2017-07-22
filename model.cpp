@@ -44,7 +44,17 @@ void Model::load_obj_file(std::string fn, Material* mat) {
   std::vector<Point> vertices;
   std::vector<Point> texel_coordinates;
   std::vector<Vector> normals;
+  std::vector<Material*> materials;
+  Material* curr_mat = mat;
   bool smooth = true;
+
+  std::vector<std::string> fn_parts = split(fn, '/', true);
+  std::string directory("./");
+  fn = directory + fn;
+  for (size_t i = 0; i < fn_parts.size() - 1; i += 1) {
+    directory += fn_parts[i];
+    directory += '/';
+  }
 
   vertices.push_back(Point(0, 0, 0));
   texel_coordinates.push_back(Point(0, 0));
@@ -86,13 +96,82 @@ void Model::load_obj_file(std::string fn, Material* mat) {
           vertices[         atof(v3[0].c_str())],
           normals[          atof(v3[2].c_str())],
           texel_coordinates[atof(v3[1].c_str())],
-          mat
+          curr_mat
         );
+      } else if (split_line[0].compare("mtllib") == 0) {
+        materials = load_mtl_file(directory + split_line[1], directory);
+        curr_mat = materials.back();
+      } else if (split_line[0].compare("usemtl") == 0) {
+        for (size_t i = 0; i < materials.size(); i += 1) {
+          if (materials[i]->name.compare(split_line[1]) == 0) {
+            curr_mat = materials[i];
+            break;
+          }
+        }
       }
     }
   }
 
   in_file.close();
+}
+
+std::vector<Material*> Model::load_mtl_file(std::string fn, std::string directory) {
+  std::ifstream in_file(fn.c_str());
+  std::string line;
+  std::vector<Material*> materials;
+
+  materials.push_back(new ColorMaterial(
+    Color(0.2, 0.2, 0.2),
+    Color(0.8, 0.8, 0.8),
+    Color(1, 1, 1),
+    1, 0,
+    1, 1, 0
+  ));
+  materials[0]->name = "(null)";
+
+  while (getline(in_file, line)) {
+    if (line[0] != '#' && line.size() > 0) {
+      while (std::isspace(line[0])) {
+        line.erase(line.begin());
+      }
+
+      std::vector<std::string> split_line = split(line, ' ', true);
+
+      if (split_line[0].compare("newmtl") == 0) {
+        materials.insert(materials.begin(), new Material());
+        materials[0]->name = split_line[1];
+        materials[0]->ambient_intensity = 0.5;
+        materials[0]->diffuse_intensity = 1.0;
+        materials[0]->specular_intensity = 0.5;
+      } else if (split_line[0].compare("Ns") == 0) {
+        materials[0]->shininess = atof(split_line[1].c_str());
+      } else if (split_line[0].compare("Kd") == 0) {
+        materials[0]->diffuse_texture = new ColorTexture(Color(
+          atof(split_line[1].c_str()),
+          atof(split_line[2].c_str()),
+          atof(split_line[3].c_str())
+        ));
+      } else if (split_line[0].compare("Ks") == 0) {
+        materials[0]->specular = Color(
+          atof(split_line[1].c_str()),
+          atof(split_line[2].c_str()),
+          atof(split_line[3].c_str())
+        );
+      } else if (split_line[0].compare("Ka") == 0) {
+        materials[0]->ambient_texture = new ColorTexture(Color(
+          atof(split_line[1].c_str()),
+          atof(split_line[2].c_str()),
+          atof(split_line[3].c_str())
+        ));
+      } else if (split_line[0].compare("map_Kd") == 0) {
+        materials[0]->diffuse_texture = new Texture(directory + split_line[1]);
+      }
+    }
+  }
+
+  in_file.close();
+
+  return materials;
 }
 
 void Model::add_triangle(Point i_a, Point i_b, Point i_c) {

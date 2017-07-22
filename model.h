@@ -14,6 +14,7 @@
 #include "vector.h"
 #include "matrix.h"
 #include "intersection_event.h"
+#include "color_material.h"
 
 class Model {
   public:
@@ -29,6 +30,7 @@ class Model {
     IntersectionEvent intersect(Point origin, Vector direction);
 
     void load_obj_file(std::string fn, Material* mat);
+    std::vector<Material*> load_mtl_file(std::string fn, std::string directory);
 
     void add_triangle(Point i_a, Point i_b, Point i_c);
     void add_triangle(

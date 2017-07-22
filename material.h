@@ -1,6 +1,7 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
+#include <string>
 #include "color.h"
 #include "texture.h"
 
@@ -30,6 +31,7 @@ class Material {
     Texture* ambient_texture;
     Texture* diffuse_texture;
     Color specular;
+    std::string name;
     double shininess, reflectivity, ambient_intensity, diffuse_intensity, specular_intensity;
 };
 
